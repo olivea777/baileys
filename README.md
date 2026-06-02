@@ -42,10 +42,11 @@ This fork designed for production use with a focus on clarity and safety:
 > Some npm packages are reuploading my fork under different names, with almost no meaningful changes:
 > 
 > - [@nuisockets](https://www.npmjs.com/package/@nuisockets/baileys)
-> - [@nuiisatoru/baileys](https://www.npmjs.com/package/@nuiisatoru/baileys)
-> - [@nuiisweetberry/baileys](https://www.npmjs.com/package/@nuiisweetberry/baileys)
-> - [@kaels](https://www.npmjs.com/package/@kaels/casileys)
+> - [@nuiisatoru](https://www.npmjs.com/package/@nuiisatoru/baileys)
+> - [@nuiisweetberry](https://www.npmjs.com/package/@nuiisweetberry/baileys)
 > - [@lumina-md](https://www.npmjs.com/package/@lumina-md/baileys)
+> - [@sairidev](https://www.npmjs.com/package/@sairidev/baileys-new)
+> - [nexora-baileys](https://www.npmjs.com/package/nexora-baileys)
 > 
 > They:
 > 
@@ -1507,7 +1508,7 @@ console.log('🏷️ Got user ID', ':', ids)
 
 ```javascript
 const phoneNumber = '6281111111111'
-const customPairingCode = 'FELL1234'
+const customPairingCode = 'STARFALL'
 
 await sock.requestPairingCode(phoneNumber, customPairingCode)
 

@@ -1,6 +1,6 @@
 {
    "name": "@olivea777/baileys",
-   "version": "0.3.14",
+   "version": "0.4.0",
    "description": "Enhanced Baileys v7 with fixes for newsletter media uploads, plus support for interactive messages, albums, and additional message types.",
    "main": "lib/index.js",
    "types": "lib/index.d.ts",
@@ -23,16 +23,13 @@
    "keywords": [
       "automation",
       "baileys",
-      "baileys-fork",
-      "baileys-mod",
+      "bot",
       "interactive-messages",
       "js-whatsapp",
       "multi-device",
       "whatsapp",
       "whatsapp-api",
       "whatsapp-bot",
-      "whatsapp-chat",
-      "whatsapp-group",
       "whatsapp-web"
    ],
    "homepage": "https://github.com/olivea777/baileys#readme",

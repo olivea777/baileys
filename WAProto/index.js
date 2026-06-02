@@ -1,50 +1,9 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
-import $protobuf from "protobufjs/minimal.js";
+import * as $protobuf from "protobufjs/minimal";
 
 const $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
 
 const $root = $protobuf.roots["default"] || ($protobuf.roots["default"] = {});
-
-function longToString(value, unsigned) {
-	if (typeof value === "string") {
-		return value;
-	}
-	if (typeof value === "number") {
-		return String(value);
-	}
-	// Fast path: convert Long {low, high} directly via native BigInt
-	// BigInt.toString() is a native C++ operation, much faster than Long's pure JS division loops
-	if (value && typeof value.low === "number" && typeof value.high === "number") {
-		const lo = BigInt(value.low >>> 0);
-		const hi = BigInt(value.high >>> 0);
-		const combined = (hi << 32n) | lo;
-		if (!unsigned && value.high < 0) {
-			return (combined - (1n << 64n)).toString();
-		}
-		return combined.toString();
-	}
-	return String(value);
-}
-
-function longToNumber(value, unsigned) {
-	if (typeof value === "number") {
-		return value;
-	}
-	if (typeof value === "string") {
-		return Number(value);
-	}
-	// Fast path: convert Long {low, high} directly via native BigInt
-	if (value && typeof value.low === "number" && typeof value.high === "number") {
-		const lo = BigInt(value.low >>> 0);
-		const hi = BigInt(value.high >>> 0);
-		const combined = (hi << 32n) | lo;
-		if (!unsigned && value.high < 0) {
-			return Number(combined - (1n << 64n));
-		}
-		return Number(combined);
-	}
-	return Number(value);
-}
 
 export const proto = $root.proto = (() => {
 
@@ -238,7 +197,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp, true) : o.longs === Number ? longToNumber(m.timestamp, true) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber(true) : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -467,7 +426,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp, true) : o.longs === Number ? longToNumber(m.timestamp, true) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber(true) : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -1116,7 +1075,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.lastFetchTime === "number")
                     d.lastFetchTime = o.longs === String ? String(m.lastFetchTime) : m.lastFetchTime;
                 else
-                    d.lastFetchTime = o.longs === String ? longToString(m.lastFetchTime) : o.longs === Number ? longToNumber(m.lastFetchTime) : m.lastFetchTime;
+                    d.lastFetchTime = o.longs === String ? $util.Long.prototype.toString.call(m.lastFetchTime) : o.longs === Number ? new $util.LongBits(m.lastFetchTime.low >>> 0, m.lastFetchTime.high >>> 0).toNumber() : m.lastFetchTime;
                 if (o.oneofs)
                     d._lastFetchTime = "lastFetchTime";
             }
@@ -1916,7 +1875,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -2045,7 +2004,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.responseTimestampMs === "number")
                     d.responseTimestampMs = o.longs === String ? String(m.responseTimestampMs) : m.responseTimestampMs;
                 else
-                    d.responseTimestampMs = o.longs === String ? longToString(m.responseTimestampMs) : o.longs === Number ? longToNumber(m.responseTimestampMs) : m.responseTimestampMs;
+                    d.responseTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.responseTimestampMs) : o.longs === Number ? new $util.LongBits(m.responseTimestampMs.low >>> 0, m.responseTimestampMs.high >>> 0).toNumber() : m.responseTimestampMs;
                 if (o.oneofs)
                     d._responseTimestampMs = "responseTimestampMs";
             }
@@ -2908,7 +2867,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.version === "number")
                     d.version = o.longs === String ? String(m.version) : m.version;
                 else
-                    d.version = o.longs === String ? longToString(m.version, true) : o.longs === Number ? longToNumber(m.version, true) : m.version;
+                    d.version = o.longs === String ? $util.Long.prototype.toString.call(m.version) : o.longs === Number ? new $util.LongBits(m.version.low >>> 0, m.version.high >>> 0).toNumber(true) : m.version;
                 if (o.oneofs)
                     d._version = "version";
             }
@@ -6307,7 +6266,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.whatsappBizAcctFbid === "number")
                     d.whatsappBizAcctFbid = o.longs === String ? String(m.whatsappBizAcctFbid) : m.whatsappBizAcctFbid;
                 else
-                    d.whatsappBizAcctFbid = o.longs === String ? longToString(m.whatsappBizAcctFbid, true) : o.longs === Number ? longToNumber(m.whatsappBizAcctFbid, true) : m.whatsappBizAcctFbid;
+                    d.whatsappBizAcctFbid = o.longs === String ? $util.Long.prototype.toString.call(m.whatsappBizAcctFbid) : o.longs === Number ? new $util.LongBits(m.whatsappBizAcctFbid.low >>> 0, m.whatsappBizAcctFbid.high >>> 0).toNumber(true) : m.whatsappBizAcctFbid;
                 if (o.oneofs)
                     d._whatsappBizAcctFbid = "whatsappBizAcctFbid";
             }
@@ -6320,7 +6279,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.issueTime === "number")
                     d.issueTime = o.longs === String ? String(m.issueTime) : m.issueTime;
                 else
-                    d.issueTime = o.longs === String ? longToString(m.issueTime, true) : o.longs === Number ? longToNumber(m.issueTime, true) : m.issueTime;
+                    d.issueTime = o.longs === String ? $util.Long.prototype.toString.call(m.issueTime) : o.longs === Number ? new $util.LongBits(m.issueTime.low >>> 0, m.issueTime.high >>> 0).toNumber(true) : m.issueTime;
                 if (o.oneofs)
                     d._issueTime = "issueTime";
             }
@@ -6765,7 +6724,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.privacyModeTs === "number")
                     d.privacyModeTs = o.longs === String ? String(m.privacyModeTs) : m.privacyModeTs;
                 else
-                    d.privacyModeTs = o.longs === String ? longToString(m.privacyModeTs, true) : o.longs === Number ? longToNumber(m.privacyModeTs, true) : m.privacyModeTs;
+                    d.privacyModeTs = o.longs === String ? $util.Long.prototype.toString.call(m.privacyModeTs) : o.longs === Number ? new $util.LongBits(m.privacyModeTs.low >>> 0, m.privacyModeTs.high >>> 0).toNumber(true) : m.privacyModeTs;
                 if (o.oneofs)
                     d._privacyModeTs = "privacyModeTs";
             }
@@ -6773,7 +6732,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.featureControls === "number")
                     d.featureControls = o.longs === String ? String(m.featureControls) : m.featureControls;
                 else
-                    d.featureControls = o.longs === String ? longToString(m.featureControls, true) : o.longs === Number ? longToNumber(m.featureControls, true) : m.featureControls;
+                    d.featureControls = o.longs === String ? $util.Long.prototype.toString.call(m.featureControls) : o.longs === Number ? new $util.LongBits(m.featureControls.low >>> 0, m.featureControls.high >>> 0).toNumber(true) : m.featureControls;
                 if (o.oneofs)
                     d._featureControls = "featureControls";
             }
@@ -8157,7 +8116,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.kindNegative === "number")
                     d.kindNegative = o.longs === String ? String(m.kindNegative) : m.kindNegative;
                 else
-                    d.kindNegative = o.longs === String ? longToString(m.kindNegative, true) : o.longs === Number ? longToNumber(m.kindNegative, true) : m.kindNegative;
+                    d.kindNegative = o.longs === String ? $util.Long.prototype.toString.call(m.kindNegative) : o.longs === Number ? new $util.LongBits(m.kindNegative.low >>> 0, m.kindNegative.high >>> 0).toNumber(true) : m.kindNegative;
                 if (o.oneofs)
                     d._kindNegative = "kindNegative";
             }
@@ -8165,7 +8124,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.kindPositive === "number")
                     d.kindPositive = o.longs === String ? String(m.kindPositive) : m.kindPositive;
                 else
-                    d.kindPositive = o.longs === String ? longToString(m.kindPositive, true) : o.longs === Number ? longToNumber(m.kindPositive, true) : m.kindPositive;
+                    d.kindPositive = o.longs === String ? $util.Long.prototype.toString.call(m.kindPositive) : o.longs === Number ? new $util.LongBits(m.kindPositive.low >>> 0, m.kindPositive.high >>> 0).toNumber(true) : m.kindPositive;
                 if (o.oneofs)
                     d._kindPositive = "kindPositive";
             }
@@ -10415,7 +10374,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.mediaKeyTimestamp === "number")
                     d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                 else
-                    d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                    d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                 if (o.oneofs)
                     d._mediaKeyTimestamp = "mediaKeyTimestamp";
             }
@@ -13721,7 +13680,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.estimatedCompletionTime === "number")
                     d.estimatedCompletionTime = o.longs === String ? String(m.estimatedCompletionTime) : m.estimatedCompletionTime;
                 else
-                    d.estimatedCompletionTime = o.longs === String ? longToString(m.estimatedCompletionTime) : o.longs === Number ? longToNumber(m.estimatedCompletionTime) : m.estimatedCompletionTime;
+                    d.estimatedCompletionTime = o.longs === String ? $util.Long.prototype.toString.call(m.estimatedCompletionTime) : o.longs === Number ? new $util.LongBits(m.estimatedCompletionTime.low >>> 0, m.estimatedCompletionTime.high >>> 0).toNumber() : m.estimatedCompletionTime;
                 if (o.oneofs)
                     d._estimatedCompletionTime = "estimatedCompletionTime";
             }
@@ -15217,7 +15176,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.expirationTimestamp === "number")
                         d.expirationTimestamp = o.longs === String ? String(m.expirationTimestamp) : m.expirationTimestamp;
                     else
-                        d.expirationTimestamp = o.longs === String ? longToString(m.expirationTimestamp, true) : o.longs === Number ? longToNumber(m.expirationTimestamp, true) : m.expirationTimestamp;
+                        d.expirationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.expirationTimestamp) : o.longs === Number ? new $util.LongBits(m.expirationTimestamp.low >>> 0, m.expirationTimestamp.high >>> 0).toNumber(true) : m.expirationTimestamp;
                     if (o.oneofs)
                         d._expirationTimestamp = "expirationTimestamp";
                 }
@@ -15460,7 +15419,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.nextTriggerTimestamp === "number")
                     d.nextTriggerTimestamp = o.longs === String ? String(m.nextTriggerTimestamp) : m.nextTriggerTimestamp;
                 else
-                    d.nextTriggerTimestamp = o.longs === String ? longToString(m.nextTriggerTimestamp, true) : o.longs === Number ? longToNumber(m.nextTriggerTimestamp, true) : m.nextTriggerTimestamp;
+                    d.nextTriggerTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.nextTriggerTimestamp) : o.longs === Number ? new $util.LongBits(m.nextTriggerTimestamp.low >>> 0, m.nextTriggerTimestamp.high >>> 0).toNumber(true) : m.nextTriggerTimestamp;
                 if (o.oneofs)
                     d._nextTriggerTimestamp = "nextTriggerTimestamp";
             }
@@ -17782,7 +17741,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.duration === "number")
                     d.duration = o.longs === String ? String(m.duration) : m.duration;
                 else
-                    d.duration = o.longs === String ? longToString(m.duration) : o.longs === Number ? longToNumber(m.duration) : m.duration;
+                    d.duration = o.longs === String ? $util.Long.prototype.toString.call(m.duration) : o.longs === Number ? new $util.LongBits(m.duration.low >>> 0, m.duration.high >>> 0).toNumber() : m.duration;
                 if (o.oneofs)
                     d._duration = "duration";
             }
@@ -17790,7 +17749,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.startTime === "number")
                     d.startTime = o.longs === String ? String(m.startTime) : m.startTime;
                 else
-                    d.startTime = o.longs === String ? longToString(m.startTime) : o.longs === Number ? longToNumber(m.startTime) : m.startTime;
+                    d.startTime = o.longs === String ? $util.Long.prototype.toString.call(m.startTime) : o.longs === Number ? new $util.LongBits(m.startTime.low >>> 0, m.startTime.high >>> 0).toNumber() : m.startTime;
                 if (o.oneofs)
                     d._startTime = "startTime";
             }
@@ -18473,7 +18432,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.notBefore === "number")
                             d.notBefore = o.longs === String ? String(m.notBefore) : m.notBefore;
                         else
-                            d.notBefore = o.longs === String ? longToString(m.notBefore, true) : o.longs === Number ? longToNumber(m.notBefore, true) : m.notBefore;
+                            d.notBefore = o.longs === String ? $util.Long.prototype.toString.call(m.notBefore) : o.longs === Number ? new $util.LongBits(m.notBefore.low >>> 0, m.notBefore.high >>> 0).toNumber(true) : m.notBefore;
                         if (o.oneofs)
                             d._notBefore = "notBefore";
                     }
@@ -18481,7 +18440,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.notAfter === "number")
                             d.notAfter = o.longs === String ? String(m.notAfter) : m.notAfter;
                         else
-                            d.notAfter = o.longs === String ? longToString(m.notAfter, true) : o.longs === Number ? longToNumber(m.notAfter, true) : m.notAfter;
+                            d.notAfter = o.longs === String ? $util.Long.prototype.toString.call(m.notAfter) : o.longs === Number ? new $util.LongBits(m.notAfter.low >>> 0, m.notAfter.high >>> 0).toNumber(true) : m.notAfter;
                         if (o.oneofs)
                             d._notAfter = "notAfter";
                     }
@@ -18895,7 +18854,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestamp === "number")
                         d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                     else
-                        d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                        d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                     if (o.oneofs)
                         d._timestamp = "timestamp";
                 }
@@ -20609,7 +20568,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.username === "number")
                     d.username = o.longs === String ? String(m.username) : m.username;
                 else
-                    d.username = o.longs === String ? longToString(m.username, true) : o.longs === Number ? longToNumber(m.username, true) : m.username;
+                    d.username = o.longs === String ? $util.Long.prototype.toString.call(m.username) : o.longs === Number ? new $util.LongBits(m.username.low >>> 0, m.username.high >>> 0).toNumber(true) : m.username;
                 if (o.oneofs)
                     d._username = "username";
             }
@@ -20713,7 +20672,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fbAppId === "number")
                     d.fbAppId = o.longs === String ? String(m.fbAppId) : m.fbAppId;
                 else
-                    d.fbAppId = o.longs === String ? longToString(m.fbAppId, true) : o.longs === Number ? longToNumber(m.fbAppId, true) : m.fbAppId;
+                    d.fbAppId = o.longs === String ? $util.Long.prototype.toString.call(m.fbAppId) : o.longs === Number ? new $util.LongBits(m.fbAppId.low >>> 0, m.fbAppId.high >>> 0).toNumber(true) : m.fbAppId;
                 if (o.oneofs)
                     d._fbAppId = "fbAppId";
             }
@@ -21408,7 +21367,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.accountId === "number")
                         d.accountId = o.longs === String ? String(m.accountId) : m.accountId;
                     else
-                        d.accountId = o.longs === String ? longToString(m.accountId, true) : o.longs === Number ? longToNumber(m.accountId, true) : m.accountId;
+                        d.accountId = o.longs === String ? $util.Long.prototype.toString.call(m.accountId) : o.longs === Number ? new $util.LongBits(m.accountId.low >>> 0, m.accountId.high >>> 0).toNumber(true) : m.accountId;
                     if (o.oneofs)
                         d._accountId = "accountId";
                 }
@@ -24897,7 +24856,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.ephemeralSettingTimestamp === "number")
                     d.ephemeralSettingTimestamp = o.longs === String ? String(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
                 else
-                    d.ephemeralSettingTimestamp = o.longs === String ? longToString(m.ephemeralSettingTimestamp) : o.longs === Number ? longToNumber(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
+                    d.ephemeralSettingTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.ephemeralSettingTimestamp) : o.longs === Number ? new $util.LongBits(m.ephemeralSettingTimestamp.low >>> 0, m.ephemeralSettingTimestamp.high >>> 0).toNumber() : m.ephemeralSettingTimestamp;
                 if (o.oneofs)
                     d._ephemeralSettingTimestamp = "ephemeralSettingTimestamp";
             }
@@ -26162,7 +26121,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.intData === "number")
                             d.intData = o.longs === String ? String(m.intData) : m.intData;
                         else
-                            d.intData = o.longs === String ? longToString(m.intData) : o.longs === Number ? longToNumber(m.intData) : m.intData;
+                            d.intData = o.longs === String ? $util.Long.prototype.toString.call(m.intData) : o.longs === Number ? new $util.LongBits(m.intData.low >>> 0, m.intData.high >>> 0).toNumber() : m.intData;
                         if (o.oneofs)
                             d._intData = "intData";
                     }
@@ -29222,7 +29181,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.lastMsgTimestamp === "number")
                     d.lastMsgTimestamp = o.longs === String ? String(m.lastMsgTimestamp) : m.lastMsgTimestamp;
                 else
-                    d.lastMsgTimestamp = o.longs === String ? longToString(m.lastMsgTimestamp, true) : o.longs === Number ? longToNumber(m.lastMsgTimestamp, true) : m.lastMsgTimestamp;
+                    d.lastMsgTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.lastMsgTimestamp) : o.longs === Number ? new $util.LongBits(m.lastMsgTimestamp.low >>> 0, m.lastMsgTimestamp.high >>> 0).toNumber(true) : m.lastMsgTimestamp;
                 if (o.oneofs)
                     d._lastMsgTimestamp = "lastMsgTimestamp";
             }
@@ -29250,7 +29209,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.ephemeralSettingTimestamp === "number")
                     d.ephemeralSettingTimestamp = o.longs === String ? String(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
                 else
-                    d.ephemeralSettingTimestamp = o.longs === String ? longToString(m.ephemeralSettingTimestamp) : o.longs === Number ? longToNumber(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
+                    d.ephemeralSettingTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.ephemeralSettingTimestamp) : o.longs === Number ? new $util.LongBits(m.ephemeralSettingTimestamp.low >>> 0, m.ephemeralSettingTimestamp.high >>> 0).toNumber() : m.ephemeralSettingTimestamp;
                 if (o.oneofs)
                     d._ephemeralSettingTimestamp = "ephemeralSettingTimestamp";
             }
@@ -29263,7 +29222,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.conversationTimestamp === "number")
                     d.conversationTimestamp = o.longs === String ? String(m.conversationTimestamp) : m.conversationTimestamp;
                 else
-                    d.conversationTimestamp = o.longs === String ? longToString(m.conversationTimestamp, true) : o.longs === Number ? longToNumber(m.conversationTimestamp, true) : m.conversationTimestamp;
+                    d.conversationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.conversationTimestamp) : o.longs === Number ? new $util.LongBits(m.conversationTimestamp.low >>> 0, m.conversationTimestamp.high >>> 0).toNumber(true) : m.conversationTimestamp;
                 if (o.oneofs)
                     d._conversationTimestamp = "conversationTimestamp";
             }
@@ -29317,7 +29276,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.tcTokenTimestamp === "number")
                     d.tcTokenTimestamp = o.longs === String ? String(m.tcTokenTimestamp) : m.tcTokenTimestamp;
                 else
-                    d.tcTokenTimestamp = o.longs === String ? longToString(m.tcTokenTimestamp, true) : o.longs === Number ? longToNumber(m.tcTokenTimestamp, true) : m.tcTokenTimestamp;
+                    d.tcTokenTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.tcTokenTimestamp) : o.longs === Number ? new $util.LongBits(m.tcTokenTimestamp.low >>> 0, m.tcTokenTimestamp.high >>> 0).toNumber(true) : m.tcTokenTimestamp;
                 if (o.oneofs)
                     d._tcTokenTimestamp = "tcTokenTimestamp";
             }
@@ -29335,7 +29294,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.muteEndTime === "number")
                     d.muteEndTime = o.longs === String ? String(m.muteEndTime) : m.muteEndTime;
                 else
-                    d.muteEndTime = o.longs === String ? longToString(m.muteEndTime, true) : o.longs === Number ? longToNumber(m.muteEndTime, true) : m.muteEndTime;
+                    d.muteEndTime = o.longs === String ? $util.Long.prototype.toString.call(m.muteEndTime) : o.longs === Number ? new $util.LongBits(m.muteEndTime.low >>> 0, m.muteEndTime.high >>> 0).toNumber(true) : m.muteEndTime;
                 if (o.oneofs)
                     d._muteEndTime = "muteEndTime";
             }
@@ -29353,7 +29312,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.tcTokenSenderTimestamp === "number")
                     d.tcTokenSenderTimestamp = o.longs === String ? String(m.tcTokenSenderTimestamp) : m.tcTokenSenderTimestamp;
                 else
-                    d.tcTokenSenderTimestamp = o.longs === String ? longToString(m.tcTokenSenderTimestamp, true) : o.longs === Number ? longToNumber(m.tcTokenSenderTimestamp, true) : m.tcTokenSenderTimestamp;
+                    d.tcTokenSenderTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.tcTokenSenderTimestamp) : o.longs === Number ? new $util.LongBits(m.tcTokenSenderTimestamp.low >>> 0, m.tcTokenSenderTimestamp.high >>> 0).toNumber(true) : m.tcTokenSenderTimestamp;
                 if (o.oneofs)
                     d._tcTokenSenderTimestamp = "tcTokenSenderTimestamp";
             }
@@ -29371,7 +29330,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.createdAt === "number")
                     d.createdAt = o.longs === String ? String(m.createdAt) : m.createdAt;
                 else
-                    d.createdAt = o.longs === String ? longToString(m.createdAt, true) : o.longs === Number ? longToNumber(m.createdAt, true) : m.createdAt;
+                    d.createdAt = o.longs === String ? $util.Long.prototype.toString.call(m.createdAt) : o.longs === Number ? new $util.LongBits(m.createdAt.low >>> 0, m.createdAt.high >>> 0).toNumber(true) : m.createdAt;
                 if (o.oneofs)
                     d._createdAt = "createdAt";
             }
@@ -29474,7 +29433,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.limitSharingSettingTimestamp === "number")
                     d.limitSharingSettingTimestamp = o.longs === String ? String(m.limitSharingSettingTimestamp) : m.limitSharingSettingTimestamp;
                 else
-                    d.limitSharingSettingTimestamp = o.longs === String ? longToString(m.limitSharingSettingTimestamp) : o.longs === Number ? longToNumber(m.limitSharingSettingTimestamp) : m.limitSharingSettingTimestamp;
+                    d.limitSharingSettingTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.limitSharingSettingTimestamp) : o.longs === Number ? new $util.LongBits(m.limitSharingSettingTimestamp.low >>> 0, m.limitSharingSettingTimestamp.high >>> 0).toNumber() : m.limitSharingSettingTimestamp;
                 if (o.oneofs)
                     d._limitSharingSettingTimestamp = "limitSharingSettingTimestamp";
             }
@@ -29522,7 +29481,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.appealUpdateTime === "number")
                     d.appealUpdateTime = o.longs === String ? String(m.appealUpdateTime) : m.appealUpdateTime;
                 else
-                    d.appealUpdateTime = o.longs === String ? longToString(m.appealUpdateTime, true) : o.longs === Number ? longToNumber(m.appealUpdateTime, true) : m.appealUpdateTime;
+                    d.appealUpdateTime = o.longs === String ? $util.Long.prototype.toString.call(m.appealUpdateTime) : o.longs === Number ? new $util.LongBits(m.appealUpdateTime.low >>> 0, m.appealUpdateTime.high >>> 0).toNumber(true) : m.appealUpdateTime;
                 if (o.oneofs)
                     d._appealUpdateTime = "appealUpdateTime";
             }
@@ -30205,7 +30164,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.chatDbMigrationTimestamp === "number")
                         d.chatDbMigrationTimestamp = o.longs === String ? String(m.chatDbMigrationTimestamp) : m.chatDbMigrationTimestamp;
                     else
-                        d.chatDbMigrationTimestamp = o.longs === String ? longToString(m.chatDbMigrationTimestamp, true) : o.longs === Number ? longToNumber(m.chatDbMigrationTimestamp, true) : m.chatDbMigrationTimestamp;
+                        d.chatDbMigrationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.chatDbMigrationTimestamp) : o.longs === Number ? new $util.LongBits(m.chatDbMigrationTimestamp.low >>> 0, m.chatDbMigrationTimestamp.high >>> 0).toNumber(true) : m.chatDbMigrationTimestamp;
                     if (o.oneofs)
                         d._chatDbMigrationTimestamp = "chatDbMigrationTimestamp";
                 }
@@ -30728,7 +30687,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestamp === "number")
                     d.senderTimestamp = o.longs === String ? String(m.senderTimestamp) : m.senderTimestamp;
                 else
-                    d.senderTimestamp = o.longs === String ? longToString(m.senderTimestamp, true) : o.longs === Number ? longToNumber(m.senderTimestamp, true) : m.senderTimestamp;
+                    d.senderTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestamp) : o.longs === Number ? new $util.LongBits(m.senderTimestamp.low >>> 0, m.senderTimestamp.high >>> 0).toNumber(true) : m.senderTimestamp;
                 if (o.oneofs)
                     d._senderTimestamp = "senderTimestamp";
             }
@@ -30757,7 +30716,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.recipientTimestamp === "number")
                     d.recipientTimestamp = o.longs === String ? String(m.recipientTimestamp) : m.recipientTimestamp;
                 else
-                    d.recipientTimestamp = o.longs === String ? longToString(m.recipientTimestamp, true) : o.longs === Number ? longToNumber(m.recipientTimestamp, true) : m.recipientTimestamp;
+                    d.recipientTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.recipientTimestamp) : o.longs === Number ? new $util.LongBits(m.recipientTimestamp.low >>> 0, m.recipientTimestamp.high >>> 0).toNumber(true) : m.recipientTimestamp;
                 if (o.oneofs)
                     d._recipientTimestamp = "recipientTimestamp";
             }
@@ -32706,7 +32665,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.musicSongStartTimeInMs === "number")
                     d.musicSongStartTimeInMs = o.longs === String ? String(m.musicSongStartTimeInMs) : m.musicSongStartTimeInMs;
                 else
-                    d.musicSongStartTimeInMs = o.longs === String ? longToString(m.musicSongStartTimeInMs) : o.longs === Number ? longToNumber(m.musicSongStartTimeInMs) : m.musicSongStartTimeInMs;
+                    d.musicSongStartTimeInMs = o.longs === String ? $util.Long.prototype.toString.call(m.musicSongStartTimeInMs) : o.longs === Number ? new $util.LongBits(m.musicSongStartTimeInMs.low >>> 0, m.musicSongStartTimeInMs.high >>> 0).toNumber() : m.musicSongStartTimeInMs;
                 if (o.oneofs)
                     d._musicSongStartTimeInMs = "musicSongStartTimeInMs";
             }
@@ -32714,7 +32673,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.derivedContentStartTimeInMs === "number")
                     d.derivedContentStartTimeInMs = o.longs === String ? String(m.derivedContentStartTimeInMs) : m.derivedContentStartTimeInMs;
                 else
-                    d.derivedContentStartTimeInMs = o.longs === String ? longToString(m.derivedContentStartTimeInMs) : o.longs === Number ? longToNumber(m.derivedContentStartTimeInMs) : m.derivedContentStartTimeInMs;
+                    d.derivedContentStartTimeInMs = o.longs === String ? $util.Long.prototype.toString.call(m.derivedContentStartTimeInMs) : o.longs === Number ? new $util.LongBits(m.derivedContentStartTimeInMs.low >>> 0, m.derivedContentStartTimeInMs.high >>> 0).toNumber() : m.derivedContentStartTimeInMs;
                 if (o.oneofs)
                     d._derivedContentStartTimeInMs = "derivedContentStartTimeInMs";
             }
@@ -32722,7 +32681,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.overlapDurationInMs === "number")
                     d.overlapDurationInMs = o.longs === String ? String(m.overlapDurationInMs) : m.overlapDurationInMs;
                 else
-                    d.overlapDurationInMs = o.longs === String ? longToString(m.overlapDurationInMs) : o.longs === Number ? longToNumber(m.overlapDurationInMs) : m.overlapDurationInMs;
+                    d.overlapDurationInMs = o.longs === String ? $util.Long.prototype.toString.call(m.overlapDurationInMs) : o.longs === Number ? new $util.LongBits(m.overlapDurationInMs.low >>> 0, m.overlapDurationInMs.high >>> 0).toNumber() : m.overlapDurationInMs;
                 if (o.oneofs)
                     d._overlapDurationInMs = "overlapDurationInMs";
             }
@@ -32972,7 +32931,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -33231,7 +33190,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestampMs === "number")
                     d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                 else
-                    d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                    d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                 if (o.oneofs)
                     d._timestampMs = "timestampMs";
             }
@@ -33363,7 +33322,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.code === "number")
                     d.code = o.longs === String ? String(m.code) : m.code;
                 else
-                    d.code = o.longs === String ? longToString(m.code, true) : o.longs === Number ? longToNumber(m.code, true) : m.code;
+                    d.code = o.longs === String ? $util.Long.prototype.toString.call(m.code) : o.longs === Number ? new $util.LongBits(m.code.low >>> 0, m.code.high >>> 0).toNumber(true) : m.code;
                 if (o.oneofs)
                     d._code = "code";
             }
@@ -33578,7 +33537,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fileSizeBytes === "number")
                     d.fileSizeBytes = o.longs === String ? String(m.fileSizeBytes) : m.fileSizeBytes;
                 else
-                    d.fileSizeBytes = o.longs === String ? longToString(m.fileSizeBytes, true) : o.longs === Number ? longToNumber(m.fileSizeBytes, true) : m.fileSizeBytes;
+                    d.fileSizeBytes = o.longs === String ? $util.Long.prototype.toString.call(m.fileSizeBytes) : o.longs === Number ? new $util.LongBits(m.fileSizeBytes.low >>> 0, m.fileSizeBytes.high >>> 0).toNumber(true) : m.fileSizeBytes;
                 if (o.oneofs)
                     d._fileSizeBytes = "fileSizeBytes";
             }
@@ -34437,7 +34396,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.disappearingModeTimestamp === "number")
                     d.disappearingModeTimestamp = o.longs === String ? String(m.disappearingModeTimestamp) : m.disappearingModeTimestamp;
                 else
-                    d.disappearingModeTimestamp = o.longs === String ? longToString(m.disappearingModeTimestamp) : o.longs === Number ? longToNumber(m.disappearingModeTimestamp) : m.disappearingModeTimestamp;
+                    d.disappearingModeTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.disappearingModeTimestamp) : o.longs === Number ? new $util.LongBits(m.disappearingModeTimestamp.low >>> 0, m.disappearingModeTimestamp.high >>> 0).toNumber() : m.disappearingModeTimestamp;
                 if (o.oneofs)
                     d._disappearingModeTimestamp = "disappearingModeTimestamp";
             }
@@ -34490,7 +34449,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.chatDbLidMigrationTimestamp === "number")
                     d.chatDbLidMigrationTimestamp = o.longs === String ? String(m.chatDbLidMigrationTimestamp) : m.chatDbLidMigrationTimestamp;
                 else
-                    d.chatDbLidMigrationTimestamp = o.longs === String ? longToString(m.chatDbLidMigrationTimestamp) : o.longs === Number ? longToNumber(m.chatDbLidMigrationTimestamp) : m.chatDbLidMigrationTimestamp;
+                    d.chatDbLidMigrationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.chatDbLidMigrationTimestamp) : o.longs === Number ? new $util.LongBits(m.chatDbLidMigrationTimestamp.low >>> 0, m.chatDbLidMigrationTimestamp.high >>> 0).toNumber() : m.chatDbLidMigrationTimestamp;
                 if (o.oneofs)
                     d._chatDbLidMigrationTimestamp = "chatDbLidMigrationTimestamp";
             }
@@ -35323,7 +35282,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.expiryTimestampMs === "number")
                     d.expiryTimestampMs = o.longs === String ? String(m.expiryTimestampMs) : m.expiryTimestampMs;
                 else
-                    d.expiryTimestampMs = o.longs === String ? longToString(m.expiryTimestampMs) : o.longs === Number ? longToNumber(m.expiryTimestampMs) : m.expiryTimestampMs;
+                    d.expiryTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.expiryTimestampMs) : o.longs === Number ? new $util.LongBits(m.expiryTimestampMs.low >>> 0, m.expiryTimestampMs.high >>> 0).toNumber() : m.expiryTimestampMs;
                 if (o.oneofs)
                     d._expiryTimestampMs = "expiryTimestampMs";
             }
@@ -35331,7 +35290,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.createdTimestampMs === "number")
                     d.createdTimestampMs = o.longs === String ? String(m.createdTimestampMs) : m.createdTimestampMs;
                 else
-                    d.createdTimestampMs = o.longs === String ? longToString(m.createdTimestampMs) : o.longs === Number ? longToNumber(m.createdTimestampMs) : m.createdTimestampMs;
+                    d.createdTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.createdTimestampMs) : o.longs === Number ? new $util.LongBits(m.createdTimestampMs.low >>> 0, m.createdTimestampMs.high >>> 0).toNumber() : m.createdTimestampMs;
                 if (o.oneofs)
                     d._createdTimestampMs = "createdTimestampMs";
             }
@@ -36390,7 +36349,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestampMs === "number")
                     d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                 else
-                    d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                    d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                 if (o.oneofs)
                     d._timestampMs = "timestampMs";
             }
@@ -37164,7 +37123,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.msgOrderId === "number")
                     d.msgOrderId = o.longs === String ? String(m.msgOrderId) : m.msgOrderId;
                 else
-                    d.msgOrderId = o.longs === String ? longToString(m.msgOrderId, true) : o.longs === Number ? longToNumber(m.msgOrderId, true) : m.msgOrderId;
+                    d.msgOrderId = o.longs === String ? $util.Long.prototype.toString.call(m.msgOrderId) : o.longs === Number ? new $util.LongBits(m.msgOrderId.low >>> 0, m.msgOrderId.high >>> 0).toNumber(true) : m.msgOrderId;
                 if (o.oneofs)
                     d._msgOrderId = "msgOrderId";
             }
@@ -39498,7 +39457,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.serverTimestamp === "number")
                     d.serverTimestamp = o.longs === String ? String(m.serverTimestamp) : m.serverTimestamp;
                 else
-                    d.serverTimestamp = o.longs === String ? longToString(m.serverTimestamp) : o.longs === Number ? longToNumber(m.serverTimestamp) : m.serverTimestamp;
+                    d.serverTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.serverTimestamp) : o.longs === Number ? new $util.LongBits(m.serverTimestamp.low >>> 0, m.serverTimestamp.high >>> 0).toNumber() : m.serverTimestamp;
                 if (o.oneofs)
                     d._serverTimestamp = "serverTimestamp";
             }
@@ -39516,7 +39475,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.clientTimestampMs === "number")
                     d.clientTimestampMs = o.longs === String ? String(m.clientTimestampMs) : m.clientTimestampMs;
                 else
-                    d.clientTimestampMs = o.longs === String ? longToString(m.clientTimestampMs) : o.longs === Number ? longToNumber(m.clientTimestampMs) : m.clientTimestampMs;
+                    d.clientTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.clientTimestampMs) : o.longs === Number ? new $util.LongBits(m.clientTimestampMs.low >>> 0, m.clientTimestampMs.high >>> 0).toNumber() : m.clientTimestampMs;
                 if (o.oneofs)
                     d._clientTimestampMs = "clientTimestampMs";
             }
@@ -39524,7 +39483,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.serverTimestampMs === "number")
                     d.serverTimestampMs = o.longs === String ? String(m.serverTimestampMs) : m.serverTimestampMs;
                 else
-                    d.serverTimestampMs = o.longs === String ? longToString(m.serverTimestampMs) : o.longs === Number ? longToNumber(m.serverTimestampMs) : m.serverTimestampMs;
+                    d.serverTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.serverTimestampMs) : o.longs === Number ? new $util.LongBits(m.serverTimestampMs.low >>> 0, m.serverTimestampMs.high >>> 0).toNumber() : m.serverTimestampMs;
                 if (o.oneofs)
                     d._serverTimestampMs = "serverTimestampMs";
             }
@@ -39975,19 +39934,19 @@ export const proto = $root.proto = (() => {
                 if (typeof m.pn === "number")
                     d.pn = o.longs === String ? String(m.pn) : m.pn;
                 else
-                    d.pn = o.longs === String ? longToString(m.pn, true) : o.longs === Number ? longToNumber(m.pn, true) : m.pn;
+                    d.pn = o.longs === String ? $util.Long.prototype.toString.call(m.pn) : o.longs === Number ? new $util.LongBits(m.pn.low >>> 0, m.pn.high >>> 0).toNumber(true) : m.pn;
             }
             if (m.assignedLid != null && m.hasOwnProperty("assignedLid")) {
                 if (typeof m.assignedLid === "number")
                     d.assignedLid = o.longs === String ? String(m.assignedLid) : m.assignedLid;
                 else
-                    d.assignedLid = o.longs === String ? longToString(m.assignedLid, true) : o.longs === Number ? longToNumber(m.assignedLid, true) : m.assignedLid;
+                    d.assignedLid = o.longs === String ? $util.Long.prototype.toString.call(m.assignedLid) : o.longs === Number ? new $util.LongBits(m.assignedLid.low >>> 0, m.assignedLid.high >>> 0).toNumber(true) : m.assignedLid;
             }
             if (m.latestLid != null && m.hasOwnProperty("latestLid")) {
                 if (typeof m.latestLid === "number")
                     d.latestLid = o.longs === String ? String(m.latestLid) : m.latestLid;
                 else
-                    d.latestLid = o.longs === String ? longToString(m.latestLid, true) : o.longs === Number ? longToNumber(m.latestLid, true) : m.latestLid;
+                    d.latestLid = o.longs === String ? $util.Long.prototype.toString.call(m.latestLid) : o.longs === Number ? new $util.LongBits(m.latestLid.low >>> 0, m.latestLid.high >>> 0).toNumber(true) : m.latestLid;
                 if (o.oneofs)
                     d._latestLid = "latestLid";
             }
@@ -40223,7 +40182,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.chatDbMigrationTimestamp === "number")
                     d.chatDbMigrationTimestamp = o.longs === String ? String(m.chatDbMigrationTimestamp) : m.chatDbMigrationTimestamp;
                 else
-                    d.chatDbMigrationTimestamp = o.longs === String ? longToString(m.chatDbMigrationTimestamp, true) : o.longs === Number ? longToNumber(m.chatDbMigrationTimestamp, true) : m.chatDbMigrationTimestamp;
+                    d.chatDbMigrationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.chatDbMigrationTimestamp) : o.longs === Number ? new $util.LongBits(m.chatDbMigrationTimestamp.low >>> 0, m.chatDbMigrationTimestamp.high >>> 0).toNumber(true) : m.chatDbMigrationTimestamp;
                 if (o.oneofs)
                     d._chatDbMigrationTimestamp = "chatDbMigrationTimestamp";
             }
@@ -40529,7 +40488,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.limitSharingSettingTimestamp === "number")
                     d.limitSharingSettingTimestamp = o.longs === String ? String(m.limitSharingSettingTimestamp) : m.limitSharingSettingTimestamp;
                 else
-                    d.limitSharingSettingTimestamp = o.longs === String ? longToString(m.limitSharingSettingTimestamp) : o.longs === Number ? longToNumber(m.limitSharingSettingTimestamp) : m.limitSharingSettingTimestamp;
+                    d.limitSharingSettingTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.limitSharingSettingTimestamp) : o.longs === Number ? new $util.LongBits(m.limitSharingSettingTimestamp.low >>> 0, m.limitSharingSettingTimestamp.high >>> 0).toNumber() : m.limitSharingSettingTimestamp;
                 if (o.oneofs)
                     d._limitSharingSettingTimestamp = "limitSharingSettingTimestamp";
             }
@@ -41211,7 +41170,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fileLength === "number")
                     d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                 else
-                    d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                    d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                 if (o.oneofs)
                     d._fileLength = "fileLength";
             }
@@ -41538,7 +41497,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.labelTimestamp === "number")
                     d.labelTimestamp = o.longs === String ? String(m.labelTimestamp) : m.labelTimestamp;
                 else
-                    d.labelTimestamp = o.longs === String ? longToString(m.labelTimestamp) : o.longs === Number ? longToNumber(m.labelTimestamp) : m.labelTimestamp;
+                    d.labelTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.labelTimestamp) : o.longs === Number ? new $util.LongBits(m.labelTimestamp.low >>> 0, m.labelTimestamp.high >>> 0).toNumber() : m.labelTimestamp;
                 if (o.oneofs)
                     d._labelTimestamp = "labelTimestamp";
             }
@@ -44321,7 +44280,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestamp === "number")
                         d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                     else
-                        d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                        d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                     if (o.oneofs)
                         d._timestamp = "timestamp";
                 }
@@ -44595,7 +44554,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestamp === "number")
                         d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                     else
-                        d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                        d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                     if (o.oneofs)
                         d._timestamp = "timestamp";
                 }
@@ -45440,7 +45399,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -45473,7 +45432,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -47158,7 +47117,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.durationSecs === "number")
                         d.durationSecs = o.longs === String ? String(m.durationSecs) : m.durationSecs;
                     else
-                        d.durationSecs = o.longs === String ? longToString(m.durationSecs) : o.longs === Number ? longToNumber(m.durationSecs) : m.durationSecs;
+                        d.durationSecs = o.longs === String ? $util.Long.prototype.toString.call(m.durationSecs) : o.longs === Number ? new $util.LongBits(m.durationSecs.low >>> 0, m.durationSecs.high >>> 0).toNumber() : m.durationSecs;
                     if (o.oneofs)
                         d._durationSecs = "durationSecs";
                 }
@@ -48290,7 +48249,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.settingTimestampMs === "number")
                         d.settingTimestampMs = o.longs === String ? String(m.settingTimestampMs) : m.settingTimestampMs;
                     else
-                        d.settingTimestampMs = o.longs === String ? longToString(m.settingTimestampMs) : o.longs === Number ? longToNumber(m.settingTimestampMs) : m.settingTimestampMs;
+                        d.settingTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.settingTimestampMs) : o.longs === Number ? new $util.LongBits(m.settingTimestampMs.low >>> 0, m.settingTimestampMs.high >>> 0).toNumber() : m.settingTimestampMs;
                     if (o.oneofs)
                         d._settingTimestampMs = "settingTimestampMs";
                 }
@@ -48534,7 +48493,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.senderNotificationTimestampMs === "number")
                         d.senderNotificationTimestampMs = o.longs === String ? String(m.senderNotificationTimestampMs) : m.senderNotificationTimestampMs;
                     else
-                        d.senderNotificationTimestampMs = o.longs === String ? longToString(m.senderNotificationTimestampMs) : o.longs === Number ? longToNumber(m.senderNotificationTimestampMs) : m.senderNotificationTimestampMs;
+                        d.senderNotificationTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderNotificationTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderNotificationTimestampMs.low >>> 0, m.senderNotificationTimestampMs.high >>> 0).toNumber() : m.senderNotificationTimestampMs;
                     if (o.oneofs)
                         d._senderNotificationTimestampMs = "senderNotificationTimestampMs";
                 }
@@ -50008,7 +49967,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -50041,7 +50000,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -50795,7 +50754,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.startTime === "number")
                         d.startTime = o.longs === String ? String(m.startTime) : m.startTime;
                     else
-                        d.startTime = o.longs === String ? longToString(m.startTime) : o.longs === Number ? longToNumber(m.startTime) : m.startTime;
+                        d.startTime = o.longs === String ? $util.Long.prototype.toString.call(m.startTime) : o.longs === Number ? new $util.LongBits(m.startTime.low >>> 0, m.startTime.high >>> 0).toNumber() : m.startTime;
                     if (o.oneofs)
                         d._startTime = "startTime";
                 }
@@ -50813,7 +50772,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.endTime === "number")
                         d.endTime = o.longs === String ? String(m.endTime) : m.endTime;
                     else
-                        d.endTime = o.longs === String ? longToString(m.endTime) : o.longs === Number ? longToNumber(m.endTime) : m.endTime;
+                        d.endTime = o.longs === String ? $util.Long.prototype.toString.call(m.endTime) : o.longs === Number ? new $util.LongBits(m.endTime.low >>> 0, m.endTime.high >>> 0).toNumber() : m.endTime;
                     if (o.oneofs)
                         d._endTime = "endTime";
                 }
@@ -51148,7 +51107,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.startTime === "number")
                         d.startTime = o.longs === String ? String(m.startTime) : m.startTime;
                     else
-                        d.startTime = o.longs === String ? longToString(m.startTime) : o.longs === Number ? longToNumber(m.startTime) : m.startTime;
+                        d.startTime = o.longs === String ? $util.Long.prototype.toString.call(m.startTime) : o.longs === Number ? new $util.LongBits(m.startTime.low >>> 0, m.startTime.high >>> 0).toNumber() : m.startTime;
                     if (o.oneofs)
                         d._startTime = "startTime";
                 }
@@ -51156,7 +51115,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.endTime === "number")
                         d.endTime = o.longs === String ? String(m.endTime) : m.endTime;
                     else
-                        d.endTime = o.longs === String ? longToString(m.endTime) : o.longs === Number ? longToNumber(m.endTime) : m.endTime;
+                        d.endTime = o.longs === String ? $util.Long.prototype.toString.call(m.endTime) : o.longs === Number ? new $util.LongBits(m.endTime.low >>> 0, m.endTime.high >>> 0).toNumber() : m.endTime;
                     if (o.oneofs)
                         d._endTime = "endTime";
                 }
@@ -51179,7 +51138,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.reminderOffsetSec === "number")
                         d.reminderOffsetSec = o.longs === String ? String(m.reminderOffsetSec) : m.reminderOffsetSec;
                     else
-                        d.reminderOffsetSec = o.longs === String ? longToString(m.reminderOffsetSec) : o.longs === Number ? longToNumber(m.reminderOffsetSec) : m.reminderOffsetSec;
+                        d.reminderOffsetSec = o.longs === String ? $util.Long.prototype.toString.call(m.reminderOffsetSec) : o.longs === Number ? new $util.LongBits(m.reminderOffsetSec.low >>> 0, m.reminderOffsetSec.high >>> 0).toNumber() : m.reminderOffsetSec;
                     if (o.oneofs)
                         d._reminderOffsetSec = "reminderOffsetSec";
                 }
@@ -51343,7 +51302,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestampMs === "number")
                         d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                     else
-                        d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                        d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                     if (o.oneofs)
                         d._timestampMs = "timestampMs";
                 }
@@ -52178,7 +52137,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -52414,7 +52373,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.historyFromTimestamp === "number")
                         d.historyFromTimestamp = o.longs === String ? String(m.historyFromTimestamp) : m.historyFromTimestamp;
                     else
-                        d.historyFromTimestamp = o.longs === String ? longToString(m.historyFromTimestamp, true) : o.longs === Number ? longToNumber(m.historyFromTimestamp, true) : m.historyFromTimestamp;
+                        d.historyFromTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.historyFromTimestamp) : o.longs === Number ? new $util.LongBits(m.historyFromTimestamp.low >>> 0, m.historyFromTimestamp.high >>> 0).toNumber(true) : m.historyFromTimestamp;
                     if (o.oneofs)
                         d._historyFromTimestamp = "historyFromTimestamp";
                 }
@@ -52904,7 +52863,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.inviteExpiration === "number")
                         d.inviteExpiration = o.longs === String ? String(m.inviteExpiration) : m.inviteExpiration;
                     else
-                        d.inviteExpiration = o.longs === String ? longToString(m.inviteExpiration) : o.longs === Number ? longToNumber(m.inviteExpiration) : m.inviteExpiration;
+                        d.inviteExpiration = o.longs === String ? $util.Long.prototype.toString.call(m.inviteExpiration) : o.longs === Number ? new $util.LongBits(m.inviteExpiration.low >>> 0, m.inviteExpiration.high >>> 0).toNumber() : m.inviteExpiration;
                     if (o.oneofs)
                         d._inviteExpiration = "inviteExpiration";
                 }
@@ -53474,7 +53433,7 @@ export const proto = $root.proto = (() => {
                             if (typeof m.amount1000 === "number")
                                 d.amount1000 = o.longs === String ? String(m.amount1000) : m.amount1000;
                             else
-                                d.amount1000 = o.longs === String ? longToString(m.amount1000) : o.longs === Number ? longToNumber(m.amount1000) : m.amount1000;
+                                d.amount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.amount1000) : o.longs === Number ? new $util.LongBits(m.amount1000.low >>> 0, m.amount1000.high >>> 0).toNumber() : m.amount1000;
                             if (o.oneofs)
                                 d._amount1000 = "amount1000";
                         }
@@ -53978,7 +53937,7 @@ export const proto = $root.proto = (() => {
                                 if (typeof m.timestamp === "number")
                                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                                 else
-                                    d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                                 if (o.oneofs)
                                     d._timestamp = "timestamp";
                             }
@@ -54482,7 +54441,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -54525,7 +54484,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.oldestMsgInChunkTimestampSec === "number")
                         d.oldestMsgInChunkTimestampSec = o.longs === String ? String(m.oldestMsgInChunkTimestampSec) : m.oldestMsgInChunkTimestampSec;
                     else
-                        d.oldestMsgInChunkTimestampSec = o.longs === String ? longToString(m.oldestMsgInChunkTimestampSec) : o.longs === Number ? longToNumber(m.oldestMsgInChunkTimestampSec) : m.oldestMsgInChunkTimestampSec;
+                        d.oldestMsgInChunkTimestampSec = o.longs === String ? $util.Long.prototype.toString.call(m.oldestMsgInChunkTimestampSec) : o.longs === Number ? new $util.LongBits(m.oldestMsgInChunkTimestampSec.low >>> 0, m.oldestMsgInChunkTimestampSec.high >>> 0).toNumber() : m.oldestMsgInChunkTimestampSec;
                     if (o.oneofs)
                         d._oldestMsgInChunkTimestampSec = "oldestMsgInChunkTimestampSec";
                 }
@@ -55242,7 +55201,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -55281,7 +55240,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -57899,7 +57858,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.attachmentMediaKeyTimestamp === "number")
                         d.attachmentMediaKeyTimestamp = o.longs === String ? String(m.attachmentMediaKeyTimestamp) : m.attachmentMediaKeyTimestamp;
                     else
-                        d.attachmentMediaKeyTimestamp = o.longs === String ? longToString(m.attachmentMediaKeyTimestamp) : o.longs === Number ? longToNumber(m.attachmentMediaKeyTimestamp) : m.attachmentMediaKeyTimestamp;
+                        d.attachmentMediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.attachmentMediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.attachmentMediaKeyTimestamp.low >>> 0, m.attachmentMediaKeyTimestamp.high >>> 0).toNumber() : m.attachmentMediaKeyTimestamp;
                     if (o.oneofs)
                         d._attachmentMediaKeyTimestamp = "attachmentMediaKeyTimestamp";
                 }
@@ -58093,7 +58052,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestampMs === "number")
                         d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                     else
-                        d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                        d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                     if (o.oneofs)
                         d._timestampMs = "timestampMs";
                 }
@@ -60028,7 +59987,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.sequenceNumber === "number")
                         d.sequenceNumber = o.longs === String ? String(m.sequenceNumber) : m.sequenceNumber;
                     else
-                        d.sequenceNumber = o.longs === String ? longToString(m.sequenceNumber) : o.longs === Number ? longToNumber(m.sequenceNumber) : m.sequenceNumber;
+                        d.sequenceNumber = o.longs === String ? $util.Long.prototype.toString.call(m.sequenceNumber) : o.longs === Number ? new $util.LongBits(m.sequenceNumber.low >>> 0, m.sequenceNumber.high >>> 0).toNumber() : m.sequenceNumber;
                     if (o.oneofs)
                         d._sequenceNumber = "sequenceNumber";
                 }
@@ -60606,7 +60565,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -60872,7 +60831,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -61084,7 +61043,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.oldestMessageTimestampInWindow === "number")
                         d.oldestMessageTimestampInWindow = o.longs === String ? String(m.oldestMessageTimestampInWindow) : m.oldestMessageTimestampInWindow;
                     else
-                        d.oldestMessageTimestampInWindow = o.longs === String ? longToString(m.oldestMessageTimestampInWindow) : o.longs === Number ? longToNumber(m.oldestMessageTimestampInWindow) : m.oldestMessageTimestampInWindow;
+                        d.oldestMessageTimestampInWindow = o.longs === String ? $util.Long.prototype.toString.call(m.oldestMessageTimestampInWindow) : o.longs === Number ? new $util.LongBits(m.oldestMessageTimestampInWindow.low >>> 0, m.oldestMessageTimestampInWindow.high >>> 0).toNumber() : m.oldestMessageTimestampInWindow;
                     if (o.oneofs)
                         d._oldestMessageTimestampInWindow = "oldestMessageTimestampInWindow";
                 }
@@ -61092,7 +61051,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.messageCount === "number")
                         d.messageCount = o.longs === String ? String(m.messageCount) : m.messageCount;
                     else
-                        d.messageCount = o.longs === String ? longToString(m.messageCount) : o.longs === Number ? longToNumber(m.messageCount) : m.messageCount;
+                        d.messageCount = o.longs === String ? $util.Long.prototype.toString.call(m.messageCount) : o.longs === Number ? new $util.LongBits(m.messageCount.low >>> 0, m.messageCount.high >>> 0).toNumber() : m.messageCount;
                     if (o.oneofs)
                         d._messageCount = "messageCount";
                 }
@@ -61106,7 +61065,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.oldestMessageTimestampInBundle === "number")
                         d.oldestMessageTimestampInBundle = o.longs === String ? String(m.oldestMessageTimestampInBundle) : m.oldestMessageTimestampInBundle;
                     else
-                        d.oldestMessageTimestampInBundle = o.longs === String ? longToString(m.oldestMessageTimestampInBundle) : o.longs === Number ? longToNumber(m.oldestMessageTimestampInBundle) : m.oldestMessageTimestampInBundle;
+                        d.oldestMessageTimestampInBundle = o.longs === String ? $util.Long.prototype.toString.call(m.oldestMessageTimestampInBundle) : o.longs === Number ? new $util.LongBits(m.oldestMessageTimestampInBundle.low >>> 0, m.oldestMessageTimestampInBundle.high >>> 0).toNumber() : m.oldestMessageTimestampInBundle;
                     if (o.oneofs)
                         d._oldestMessageTimestampInBundle = "oldestMessageTimestampInBundle";
                 }
@@ -61438,7 +61397,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.inviteExpiration === "number")
                         d.inviteExpiration = o.longs === String ? String(m.inviteExpiration) : m.inviteExpiration;
                     else
-                        d.inviteExpiration = o.longs === String ? longToString(m.inviteExpiration) : o.longs === Number ? longToNumber(m.inviteExpiration) : m.inviteExpiration;
+                        d.inviteExpiration = o.longs === String ? $util.Long.prototype.toString.call(m.inviteExpiration) : o.longs === Number ? new $util.LongBits(m.inviteExpiration.low >>> 0, m.inviteExpiration.high >>> 0).toNumber() : m.inviteExpiration;
                     if (o.oneofs)
                         d._inviteExpiration = "inviteExpiration";
                 }
@@ -62036,7 +61995,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.totalAmount1000 === "number")
                         d.totalAmount1000 = o.longs === String ? String(m.totalAmount1000) : m.totalAmount1000;
                     else
-                        d.totalAmount1000 = o.longs === String ? longToString(m.totalAmount1000) : o.longs === Number ? longToNumber(m.totalAmount1000) : m.totalAmount1000;
+                        d.totalAmount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.totalAmount1000) : o.longs === Number ? new $util.LongBits(m.totalAmount1000.low >>> 0, m.totalAmount1000.high >>> 0).toNumber() : m.totalAmount1000;
                     if (o.oneofs)
                         d._totalAmount1000 = "totalAmount1000";
                 }
@@ -62401,7 +62360,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.expiryTimestamp === "number")
                         d.expiryTimestamp = o.longs === String ? String(m.expiryTimestamp) : m.expiryTimestamp;
                     else
-                        d.expiryTimestamp = o.longs === String ? longToString(m.expiryTimestamp) : o.longs === Number ? longToNumber(m.expiryTimestamp) : m.expiryTimestamp;
+                        d.expiryTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.expiryTimestamp) : o.longs === Number ? new $util.LongBits(m.expiryTimestamp.low >>> 0, m.expiryTimestamp.high >>> 0).toNumber() : m.expiryTimestamp;
                     if (o.oneofs)
                         d._expiryTimestamp = "expiryTimestamp";
                 }
@@ -64706,7 +64665,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.oldestMsgTimestampMs === "number")
                             d.oldestMsgTimestampMs = o.longs === String ? String(m.oldestMsgTimestampMs) : m.oldestMsgTimestampMs;
                         else
-                            d.oldestMsgTimestampMs = o.longs === String ? longToString(m.oldestMsgTimestampMs) : o.longs === Number ? longToNumber(m.oldestMsgTimestampMs) : m.oldestMsgTimestampMs;
+                            d.oldestMsgTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.oldestMsgTimestampMs) : o.longs === Number ? new $util.LongBits(m.oldestMsgTimestampMs.low >>> 0, m.oldestMsgTimestampMs.high >>> 0).toNumber() : m.oldestMsgTimestampMs;
                         if (o.oneofs)
                             d._oldestMsgTimestampMs = "oldestMsgTimestampMs";
                     }
@@ -65154,7 +65113,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.timestamp === "number")
                             d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                         else
-                            d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                            d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                         if (o.oneofs)
                             d._timestamp = "timestamp";
                     }
@@ -65882,7 +65841,7 @@ export const proto = $root.proto = (() => {
                             if (typeof m.timestampMs === "number")
                                 d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                             else
-                                d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                                d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                             if (o.oneofs)
                                 d._timestampMs = "timestampMs";
                         }
@@ -66570,7 +66529,7 @@ export const proto = $root.proto = (() => {
                             if (typeof m.mediaKeyTimestamp === "number")
                                 d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                             else
-                                d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                                d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                             if (o.oneofs)
                                 d._mediaKeyTimestamp = "mediaKeyTimestamp";
                         }
@@ -66578,7 +66537,7 @@ export const proto = $root.proto = (() => {
                             if (typeof m.fileLength === "number")
                                 d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                             else
-                                d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                                d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                             if (o.oneofs)
                                 d._fileLength = "fileLength";
                         }
@@ -67480,7 +67439,7 @@ export const proto = $root.proto = (() => {
                                 if (typeof m.mediaKeyTimestampMs === "number")
                                     d.mediaKeyTimestampMs = o.longs === String ? String(m.mediaKeyTimestampMs) : m.mediaKeyTimestampMs;
                                 else
-                                    d.mediaKeyTimestampMs = o.longs === String ? longToString(m.mediaKeyTimestampMs) : o.longs === Number ? longToNumber(m.mediaKeyTimestampMs) : m.mediaKeyTimestampMs;
+                                    d.mediaKeyTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestampMs) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestampMs.low >>> 0, m.mediaKeyTimestampMs.high >>> 0).toNumber() : m.mediaKeyTimestampMs;
                                 if (o.oneofs)
                                     d._mediaKeyTimestampMs = "mediaKeyTimestampMs";
                             }
@@ -68201,7 +68160,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.senderTimestampMs === "number")
                         d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                     else
-                        d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                        d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                     if (o.oneofs)
                         d._senderTimestampMs = "senderTimestampMs";
                 }
@@ -68802,7 +68761,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.endTime === "number")
                         d.endTime = o.longs === String ? String(m.endTime) : m.endTime;
                     else
-                        d.endTime = o.longs === String ? longToString(m.endTime) : o.longs === Number ? longToNumber(m.endTime) : m.endTime;
+                        d.endTime = o.longs === String ? $util.Long.prototype.toString.call(m.endTime) : o.longs === Number ? new $util.LongBits(m.endTime.low >>> 0, m.endTime.high >>> 0).toNumber() : m.endTime;
                     if (o.oneofs)
                         d._endTime = "endTime";
                 }
@@ -69360,7 +69319,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.optionVoteCount === "number")
                             d.optionVoteCount = o.longs === String ? String(m.optionVoteCount) : m.optionVoteCount;
                         else
-                            d.optionVoteCount = o.longs === String ? longToString(m.optionVoteCount) : o.longs === Number ? longToNumber(m.optionVoteCount) : m.optionVoteCount;
+                            d.optionVoteCount = o.longs === String ? $util.Long.prototype.toString.call(m.optionVoteCount) : o.longs === Number ? new $util.LongBits(m.optionVoteCount.low >>> 0, m.optionVoteCount.high >>> 0).toNumber() : m.optionVoteCount;
                         if (o.oneofs)
                             d._optionVoteCount = "optionVoteCount";
                     }
@@ -69545,7 +69504,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.senderTimestampMs === "number")
                         d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                     else
-                        d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                        d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                     if (o.oneofs)
                         d._senderTimestampMs = "senderTimestampMs";
                 }
@@ -70378,7 +70337,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.priceAmount1000 === "number")
                             d.priceAmount1000 = o.longs === String ? String(m.priceAmount1000) : m.priceAmount1000;
                         else
-                            d.priceAmount1000 = o.longs === String ? longToString(m.priceAmount1000) : o.longs === Number ? longToNumber(m.priceAmount1000) : m.priceAmount1000;
+                            d.priceAmount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.priceAmount1000) : o.longs === Number ? new $util.LongBits(m.priceAmount1000.low >>> 0, m.priceAmount1000.high >>> 0).toNumber() : m.priceAmount1000;
                         if (o.oneofs)
                             d._priceAmount1000 = "priceAmount1000";
                     }
@@ -70406,7 +70365,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.salePriceAmount1000 === "number")
                             d.salePriceAmount1000 = o.longs === String ? String(m.salePriceAmount1000) : m.salePriceAmount1000;
                         else
-                            d.salePriceAmount1000 = o.longs === String ? longToString(m.salePriceAmount1000) : o.longs === Number ? longToNumber(m.salePriceAmount1000) : m.salePriceAmount1000;
+                            d.salePriceAmount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.salePriceAmount1000) : o.longs === Number ? new $util.LongBits(m.salePriceAmount1000.low >>> 0, m.salePriceAmount1000.high >>> 0).toNumber() : m.salePriceAmount1000;
                         if (o.oneofs)
                             d._salePriceAmount1000 = "salePriceAmount1000";
                     }
@@ -71144,7 +71103,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.ephemeralSettingTimestamp === "number")
                         d.ephemeralSettingTimestamp = o.longs === String ? String(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
                     else
-                        d.ephemeralSettingTimestamp = o.longs === String ? longToString(m.ephemeralSettingTimestamp) : o.longs === Number ? longToNumber(m.ephemeralSettingTimestamp) : m.ephemeralSettingTimestamp;
+                        d.ephemeralSettingTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.ephemeralSettingTimestamp) : o.longs === Number ? new $util.LongBits(m.ephemeralSettingTimestamp.low >>> 0, m.ephemeralSettingTimestamp.high >>> 0).toNumber() : m.ephemeralSettingTimestamp;
                     if (o.oneofs)
                         d._ephemeralSettingTimestamp = "ephemeralSettingTimestamp";
                 }
@@ -71187,7 +71146,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestampMs === "number")
                         d.timestampMs = o.longs === String ? String(m.timestampMs) : m.timestampMs;
                     else
-                        d.timestampMs = o.longs === String ? longToString(m.timestampMs) : o.longs === Number ? longToNumber(m.timestampMs) : m.timestampMs;
+                        d.timestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.timestampMs) : o.longs === Number ? new $util.LongBits(m.timestampMs.low >>> 0, m.timestampMs.high >>> 0).toNumber() : m.timestampMs;
                     if (o.oneofs)
                         d._timestampMs = "timestampMs";
                 }
@@ -71592,7 +71551,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.senderTimestampMs === "number")
                         d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                     else
-                        d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                        d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                     if (o.oneofs)
                         d._senderTimestampMs = "senderTimestampMs";
                 }
@@ -71812,7 +71771,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.amount1000 === "number")
                         d.amount1000 = o.longs === String ? String(m.amount1000) : m.amount1000;
                     else
-                        d.amount1000 = o.longs === String ? longToString(m.amount1000, true) : o.longs === Number ? longToNumber(m.amount1000, true) : m.amount1000;
+                        d.amount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.amount1000) : o.longs === Number ? new $util.LongBits(m.amount1000.low >>> 0, m.amount1000.high >>> 0).toNumber(true) : m.amount1000;
                     if (o.oneofs)
                         d._amount1000 = "amount1000";
                 }
@@ -71830,7 +71789,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.expiryTimestamp === "number")
                         d.expiryTimestamp = o.longs === String ? String(m.expiryTimestamp) : m.expiryTimestamp;
                     else
-                        d.expiryTimestamp = o.longs === String ? longToString(m.expiryTimestamp) : o.longs === Number ? longToNumber(m.expiryTimestamp) : m.expiryTimestamp;
+                        d.expiryTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.expiryTimestamp) : o.longs === Number ? new $util.LongBits(m.expiryTimestamp.low >>> 0, m.expiryTimestamp.high >>> 0).toNumber() : m.expiryTimestamp;
                     if (o.oneofs)
                         d._expiryTimestamp = "expiryTimestamp";
                 }
@@ -72273,7 +72232,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.scheduledTimestampMs === "number")
                         d.scheduledTimestampMs = o.longs === String ? String(m.scheduledTimestampMs) : m.scheduledTimestampMs;
                     else
-                        d.scheduledTimestampMs = o.longs === String ? longToString(m.scheduledTimestampMs) : o.longs === Number ? longToNumber(m.scheduledTimestampMs) : m.scheduledTimestampMs;
+                        d.scheduledTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.scheduledTimestampMs) : o.longs === Number ? new $util.LongBits(m.scheduledTimestampMs.low >>> 0, m.scheduledTimestampMs.high >>> 0).toNumber() : m.scheduledTimestampMs;
                     if (o.oneofs)
                         d._scheduledTimestampMs = "scheduledTimestampMs";
                 }
@@ -73184,7 +73143,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.createdAtMs === "number")
                         d.createdAtMs = o.longs === String ? String(m.createdAtMs) : m.createdAtMs;
                     else
-                        d.createdAtMs = o.longs === String ? longToString(m.createdAtMs) : o.longs === Number ? longToNumber(m.createdAtMs) : m.createdAtMs;
+                        d.createdAtMs = o.longs === String ? $util.Long.prototype.toString.call(m.createdAtMs) : o.longs === Number ? new $util.LongBits(m.createdAtMs.low >>> 0, m.createdAtMs.high >>> 0).toNumber() : m.createdAtMs;
                     if (o.oneofs)
                         d._createdAtMs = "createdAtMs";
                 }
@@ -74492,7 +74451,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -74500,7 +74459,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -74533,7 +74492,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.stickerSentTs === "number")
                         d.stickerSentTs = o.longs === String ? String(m.stickerSentTs) : m.stickerSentTs;
                     else
-                        d.stickerSentTs = o.longs === String ? longToString(m.stickerSentTs) : o.longs === Number ? longToNumber(m.stickerSentTs) : m.stickerSentTs;
+                        d.stickerSentTs = o.longs === String ? $util.Long.prototype.toString.call(m.stickerSentTs) : o.longs === Number ? new $util.LongBits(m.stickerSentTs.low >>> 0, m.stickerSentTs.high >>> 0).toNumber() : m.stickerSentTs;
                     if (o.oneofs)
                         d._stickerSentTs = "stickerSentTs";
                 }
@@ -75083,7 +75042,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -75126,7 +75085,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -75169,7 +75128,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.stickerPackSize === "number")
                         d.stickerPackSize = o.longs === String ? String(m.stickerPackSize) : m.stickerPackSize;
                     else
-                        d.stickerPackSize = o.longs === String ? longToString(m.stickerPackSize, true) : o.longs === Number ? longToNumber(m.stickerPackSize, true) : m.stickerPackSize;
+                        d.stickerPackSize = o.longs === String ? $util.Long.prototype.toString.call(m.stickerPackSize) : o.longs === Number ? new $util.LongBits(m.stickerPackSize.low >>> 0, m.stickerPackSize.high >>> 0).toNumber(true) : m.stickerPackSize;
                     if (o.oneofs)
                         d._stickerPackSize = "stickerPackSize";
                 }
@@ -75568,7 +75527,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.requestTimestamp === "number")
                         d.requestTimestamp = o.longs === String ? String(m.requestTimestamp) : m.requestTimestamp;
                     else
-                        d.requestTimestamp = o.longs === String ? longToString(m.requestTimestamp) : o.longs === Number ? longToNumber(m.requestTimestamp) : m.requestTimestamp;
+                        d.requestTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.requestTimestamp) : o.longs === Number ? new $util.LongBits(m.requestTimestamp.low >>> 0, m.requestTimestamp.high >>> 0).toNumber() : m.requestTimestamp;
                     if (o.oneofs)
                         d._requestTimestamp = "requestTimestamp";
                 }
@@ -77374,7 +77333,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -77428,7 +77387,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -77503,7 +77462,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.motionPhotoPresentationOffsetMs === "number")
                         d.motionPhotoPresentationOffsetMs = o.longs === String ? String(m.motionPhotoPresentationOffsetMs) : m.motionPhotoPresentationOffsetMs;
                     else
-                        d.motionPhotoPresentationOffsetMs = o.longs === String ? longToString(m.motionPhotoPresentationOffsetMs, true) : o.longs === Number ? longToNumber(m.motionPhotoPresentationOffsetMs, true) : m.motionPhotoPresentationOffsetMs;
+                        d.motionPhotoPresentationOffsetMs = o.longs === String ? $util.Long.prototype.toString.call(m.motionPhotoPresentationOffsetMs) : o.longs === Number ? new $util.LongBits(m.motionPhotoPresentationOffsetMs.low >>> 0, m.motionPhotoPresentationOffsetMs.high >>> 0).toNumber(true) : m.motionPhotoPresentationOffsetMs;
                     if (o.oneofs)
                         d._motionPhotoPresentationOffsetMs = "motionPhotoPresentationOffsetMs";
                 }
@@ -77829,7 +77788,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestampMs === "number")
                     d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                 else
-                    d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                    d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                 if (o.oneofs)
                     d._senderTimestampMs = "senderTimestampMs";
             }
@@ -77837,7 +77796,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.serverTimestampMs === "number")
                     d.serverTimestampMs = o.longs === String ? String(m.serverTimestampMs) : m.serverTimestampMs;
                 else
-                    d.serverTimestampMs = o.longs === String ? longToString(m.serverTimestampMs) : o.longs === Number ? longToNumber(m.serverTimestampMs) : m.serverTimestampMs;
+                    d.serverTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.serverTimestampMs) : o.longs === Number ? new $util.LongBits(m.serverTimestampMs.low >>> 0, m.serverTimestampMs.high >>> 0).toNumber() : m.serverTimestampMs;
                 if (o.oneofs)
                     d._serverTimestampMs = "serverTimestampMs";
             }
@@ -79190,7 +79149,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.value === "number")
                     d.value = o.longs === String ? String(m.value) : m.value;
                 else
-                    d.value = o.longs === String ? longToString(m.value) : o.longs === Number ? longToNumber(m.value) : m.value;
+                    d.value = o.longs === String ? $util.Long.prototype.toString.call(m.value) : o.longs === Number ? new $util.LongBits(m.value.low >>> 0, m.value.high >>> 0).toNumber() : m.value;
                 if (o.oneofs)
                     d._value = "value";
             }
@@ -79278,6 +79237,13 @@ export const proto = $root.proto = (() => {
         MsgOpaqueData.prototype.pollEndTime = null;
         MsgOpaqueData.prototype.pollHideVoterNames = null;
         MsgOpaqueData.prototype.pollAllowAddOption = null;
+        MsgOpaqueData.prototype.sharableEventInviteId = null;
+        MsgOpaqueData.prototype.sharableEventInviteTitle = null;
+        MsgOpaqueData.prototype.sharableEventInviteStartTime = null;
+        MsgOpaqueData.prototype.sharableEventInviteEndTime = null;
+        MsgOpaqueData.prototype.sharableEventInviteCaption = null;
+        MsgOpaqueData.prototype.sharableEventInviteIsCanceled = null;
+        MsgOpaqueData.prototype.sharableEventInviteJpegThumbnail = null;
 
         let $oneOfFields;
 
@@ -79557,6 +79523,48 @@ export const proto = $root.proto = (() => {
             set: $util.oneOfSetter($oneOfFields)
         });
 
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteId", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteId"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteTitle", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteTitle"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteStartTime", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteStartTime"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteEndTime", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteEndTime"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteCaption", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteCaption"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteIsCanceled", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteIsCanceled"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
+        // Virtual OneOf for proto3 optional field
+        Object.defineProperty(MsgOpaqueData.prototype, "_sharableEventInviteJpegThumbnail", {
+            get: $util.oneOfGetter($oneOfFields = ["sharableEventInviteJpegThumbnail"]),
+            set: $util.oneOfSetter($oneOfFields)
+        });
+
         MsgOpaqueData.create = function create(properties) {
             return new MsgOpaqueData(properties);
         };
@@ -79660,6 +79668,20 @@ export const proto = $root.proto = (() => {
                 w.uint32(410).string(m.originalSelfAuthor);
             if (m.pollAllowAddOption != null && Object.hasOwnProperty.call(m, "pollAllowAddOption"))
                 w.uint32(416).bool(m.pollAllowAddOption);
+            if (m.sharableEventInviteId != null && Object.hasOwnProperty.call(m, "sharableEventInviteId"))
+                w.uint32(426).string(m.sharableEventInviteId);
+            if (m.sharableEventInviteTitle != null && Object.hasOwnProperty.call(m, "sharableEventInviteTitle"))
+                w.uint32(434).string(m.sharableEventInviteTitle);
+            if (m.sharableEventInviteStartTime != null && Object.hasOwnProperty.call(m, "sharableEventInviteStartTime"))
+                w.uint32(440).int64(m.sharableEventInviteStartTime);
+            if (m.sharableEventInviteEndTime != null && Object.hasOwnProperty.call(m, "sharableEventInviteEndTime"))
+                w.uint32(448).int64(m.sharableEventInviteEndTime);
+            if (m.sharableEventInviteCaption != null && Object.hasOwnProperty.call(m, "sharableEventInviteCaption"))
+                w.uint32(458).string(m.sharableEventInviteCaption);
+            if (m.sharableEventInviteIsCanceled != null && Object.hasOwnProperty.call(m, "sharableEventInviteIsCanceled"))
+                w.uint32(464).bool(m.sharableEventInviteIsCanceled);
+            if (m.sharableEventInviteJpegThumbnail != null && Object.hasOwnProperty.call(m, "sharableEventInviteJpegThumbnail"))
+                w.uint32(474).bytes(m.sharableEventInviteJpegThumbnail);
             return w;
         };
 
@@ -79864,6 +79886,34 @@ export const proto = $root.proto = (() => {
                     }
                 case 52: {
                         m.pollAllowAddOption = r.bool();
+                        break;
+                    }
+                case 53: {
+                        m.sharableEventInviteId = r.string();
+                        break;
+                    }
+                case 54: {
+                        m.sharableEventInviteTitle = r.string();
+                        break;
+                    }
+                case 55: {
+                        m.sharableEventInviteStartTime = r.int64();
+                        break;
+                    }
+                case 56: {
+                        m.sharableEventInviteEndTime = r.int64();
+                        break;
+                    }
+                case 57: {
+                        m.sharableEventInviteCaption = r.string();
+                        break;
+                    }
+                case 58: {
+                        m.sharableEventInviteIsCanceled = r.bool();
+                        break;
+                    }
+                case 59: {
+                        m.sharableEventInviteJpegThumbnail = r.bytes();
                         break;
                     }
                 default:
@@ -80118,6 +80168,44 @@ export const proto = $root.proto = (() => {
             if (d.pollAllowAddOption != null) {
                 m.pollAllowAddOption = Boolean(d.pollAllowAddOption);
             }
+            if (d.sharableEventInviteId != null) {
+                m.sharableEventInviteId = String(d.sharableEventInviteId);
+            }
+            if (d.sharableEventInviteTitle != null) {
+                m.sharableEventInviteTitle = String(d.sharableEventInviteTitle);
+            }
+            if (d.sharableEventInviteStartTime != null) {
+                if ($util.Long)
+                    (m.sharableEventInviteStartTime = $util.Long.fromValue(d.sharableEventInviteStartTime)).unsigned = false;
+                else if (typeof d.sharableEventInviteStartTime === "string")
+                    m.sharableEventInviteStartTime = parseInt(d.sharableEventInviteStartTime, 10);
+                else if (typeof d.sharableEventInviteStartTime === "number")
+                    m.sharableEventInviteStartTime = d.sharableEventInviteStartTime;
+                else if (typeof d.sharableEventInviteStartTime === "object")
+                    m.sharableEventInviteStartTime = new $util.LongBits(d.sharableEventInviteStartTime.low >>> 0, d.sharableEventInviteStartTime.high >>> 0).toNumber();
+            }
+            if (d.sharableEventInviteEndTime != null) {
+                if ($util.Long)
+                    (m.sharableEventInviteEndTime = $util.Long.fromValue(d.sharableEventInviteEndTime)).unsigned = false;
+                else if (typeof d.sharableEventInviteEndTime === "string")
+                    m.sharableEventInviteEndTime = parseInt(d.sharableEventInviteEndTime, 10);
+                else if (typeof d.sharableEventInviteEndTime === "number")
+                    m.sharableEventInviteEndTime = d.sharableEventInviteEndTime;
+                else if (typeof d.sharableEventInviteEndTime === "object")
+                    m.sharableEventInviteEndTime = new $util.LongBits(d.sharableEventInviteEndTime.low >>> 0, d.sharableEventInviteEndTime.high >>> 0).toNumber();
+            }
+            if (d.sharableEventInviteCaption != null) {
+                m.sharableEventInviteCaption = String(d.sharableEventInviteCaption);
+            }
+            if (d.sharableEventInviteIsCanceled != null) {
+                m.sharableEventInviteIsCanceled = Boolean(d.sharableEventInviteIsCanceled);
+            }
+            if (d.sharableEventInviteJpegThumbnail != null) {
+                if (typeof d.sharableEventInviteJpegThumbnail === "string")
+                    $util.base64.decode(d.sharableEventInviteJpegThumbnail, m.sharableEventInviteJpegThumbnail = $util.newBuffer($util.base64.length(d.sharableEventInviteJpegThumbnail)), 0);
+                else if (d.sharableEventInviteJpegThumbnail.length >= 0)
+                    m.sharableEventInviteJpegThumbnail = d.sharableEventInviteJpegThumbnail;
+            }
             return m;
         };
 
@@ -80218,7 +80306,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestampMs === "number")
                     d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                 else
-                    d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                    d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                 if (o.oneofs)
                     d._senderTimestampMs = "senderTimestampMs";
             }
@@ -80296,7 +80384,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.eventStartTime === "number")
                     d.eventStartTime = o.longs === String ? String(m.eventStartTime) : m.eventStartTime;
                 else
-                    d.eventStartTime = o.longs === String ? longToString(m.eventStartTime) : o.longs === Number ? longToNumber(m.eventStartTime) : m.eventStartTime;
+                    d.eventStartTime = o.longs === String ? $util.Long.prototype.toString.call(m.eventStartTime) : o.longs === Number ? new $util.LongBits(m.eventStartTime.low >>> 0, m.eventStartTime.high >>> 0).toNumber() : m.eventStartTime;
                 if (o.oneofs)
                     d._eventStartTime = "eventStartTime";
             }
@@ -80309,7 +80397,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.eventEndTime === "number")
                     d.eventEndTime = o.longs === String ? String(m.eventEndTime) : m.eventEndTime;
                 else
-                    d.eventEndTime = o.longs === String ? longToString(m.eventEndTime) : o.longs === Number ? longToNumber(m.eventEndTime) : m.eventEndTime;
+                    d.eventEndTime = o.longs === String ? $util.Long.prototype.toString.call(m.eventEndTime) : o.longs === Number ? new $util.LongBits(m.eventEndTime.low >>> 0, m.eventEndTime.high >>> 0).toNumber() : m.eventEndTime;
                 if (o.oneofs)
                     d._eventEndTime = "eventEndTime";
             }
@@ -80357,7 +80445,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.pollEndTime === "number")
                     d.pollEndTime = o.longs === String ? String(m.pollEndTime) : m.pollEndTime;
                 else
-                    d.pollEndTime = o.longs === String ? longToString(m.pollEndTime) : o.longs === Number ? longToNumber(m.pollEndTime) : m.pollEndTime;
+                    d.pollEndTime = o.longs === String ? $util.Long.prototype.toString.call(m.pollEndTime) : o.longs === Number ? new $util.LongBits(m.pollEndTime.low >>> 0, m.pollEndTime.high >>> 0).toNumber() : m.pollEndTime;
                 if (o.oneofs)
                     d._pollEndTime = "pollEndTime";
             }
@@ -80375,6 +80463,47 @@ export const proto = $root.proto = (() => {
                 d.pollAllowAddOption = m.pollAllowAddOption;
                 if (o.oneofs)
                     d._pollAllowAddOption = "pollAllowAddOption";
+            }
+            if (m.sharableEventInviteId != null && m.hasOwnProperty("sharableEventInviteId")) {
+                d.sharableEventInviteId = m.sharableEventInviteId;
+                if (o.oneofs)
+                    d._sharableEventInviteId = "sharableEventInviteId";
+            }
+            if (m.sharableEventInviteTitle != null && m.hasOwnProperty("sharableEventInviteTitle")) {
+                d.sharableEventInviteTitle = m.sharableEventInviteTitle;
+                if (o.oneofs)
+                    d._sharableEventInviteTitle = "sharableEventInviteTitle";
+            }
+            if (m.sharableEventInviteStartTime != null && m.hasOwnProperty("sharableEventInviteStartTime")) {
+                if (typeof m.sharableEventInviteStartTime === "number")
+                    d.sharableEventInviteStartTime = o.longs === String ? String(m.sharableEventInviteStartTime) : m.sharableEventInviteStartTime;
+                else
+                    d.sharableEventInviteStartTime = o.longs === String ? $util.Long.prototype.toString.call(m.sharableEventInviteStartTime) : o.longs === Number ? new $util.LongBits(m.sharableEventInviteStartTime.low >>> 0, m.sharableEventInviteStartTime.high >>> 0).toNumber() : m.sharableEventInviteStartTime;
+                if (o.oneofs)
+                    d._sharableEventInviteStartTime = "sharableEventInviteStartTime";
+            }
+            if (m.sharableEventInviteEndTime != null && m.hasOwnProperty("sharableEventInviteEndTime")) {
+                if (typeof m.sharableEventInviteEndTime === "number")
+                    d.sharableEventInviteEndTime = o.longs === String ? String(m.sharableEventInviteEndTime) : m.sharableEventInviteEndTime;
+                else
+                    d.sharableEventInviteEndTime = o.longs === String ? $util.Long.prototype.toString.call(m.sharableEventInviteEndTime) : o.longs === Number ? new $util.LongBits(m.sharableEventInviteEndTime.low >>> 0, m.sharableEventInviteEndTime.high >>> 0).toNumber() : m.sharableEventInviteEndTime;
+                if (o.oneofs)
+                    d._sharableEventInviteEndTime = "sharableEventInviteEndTime";
+            }
+            if (m.sharableEventInviteCaption != null && m.hasOwnProperty("sharableEventInviteCaption")) {
+                d.sharableEventInviteCaption = m.sharableEventInviteCaption;
+                if (o.oneofs)
+                    d._sharableEventInviteCaption = "sharableEventInviteCaption";
+            }
+            if (m.sharableEventInviteIsCanceled != null && m.hasOwnProperty("sharableEventInviteIsCanceled")) {
+                d.sharableEventInviteIsCanceled = m.sharableEventInviteIsCanceled;
+                if (o.oneofs)
+                    d._sharableEventInviteIsCanceled = "sharableEventInviteIsCanceled";
+            }
+            if (m.sharableEventInviteJpegThumbnail != null && m.hasOwnProperty("sharableEventInviteJpegThumbnail")) {
+                d.sharableEventInviteJpegThumbnail = o.bytes === String ? $util.base64.encode(m.sharableEventInviteJpegThumbnail, 0, m.sharableEventInviteJpegThumbnail.length) : o.bytes === Array ? Array.prototype.slice.call(m.sharableEventInviteJpegThumbnail) : m.sharableEventInviteJpegThumbnail;
+                if (o.oneofs)
+                    d._sharableEventInviteJpegThumbnail = "sharableEventInviteJpegThumbnail";
             }
             return d;
         };
@@ -81444,7 +81573,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.expires === "number")
                         d.expires = o.longs === String ? String(m.expires) : m.expires;
                     else
-                        d.expires = o.longs === String ? longToString(m.expires, true) : o.longs === Number ? longToNumber(m.expires, true) : m.expires;
+                        d.expires = o.longs === String ? $util.Long.prototype.toString.call(m.expires) : o.longs === Number ? new $util.LongBits(m.expires.low >>> 0, m.expires.high >>> 0).toNumber(true) : m.expires;
                     if (o.oneofs)
                         d._expires = "expires";
                 }
@@ -81625,7 +81754,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.messageTimestamp === "number")
                     d.messageTimestamp = o.longs === String ? String(m.messageTimestamp) : m.messageTimestamp;
                 else
-                    d.messageTimestamp = o.longs === String ? longToString(m.messageTimestamp, true) : o.longs === Number ? longToNumber(m.messageTimestamp, true) : m.messageTimestamp;
+                    d.messageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.messageTimestamp) : o.longs === Number ? new $util.LongBits(m.messageTimestamp.low >>> 0, m.messageTimestamp.high >>> 0).toNumber(true) : m.messageTimestamp;
                 if (o.oneofs)
                     d._messageTimestamp = "messageTimestamp";
             }
@@ -82139,7 +82268,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.leaveTs === "number")
                     d.leaveTs = o.longs === String ? String(m.leaveTs) : m.leaveTs;
                 else
-                    d.leaveTs = o.longs === String ? longToString(m.leaveTs, true) : o.longs === Number ? longToNumber(m.leaveTs, true) : m.leaveTs;
+                    d.leaveTs = o.longs === String ? $util.Long.prototype.toString.call(m.leaveTs) : o.longs === Number ? new $util.LongBits(m.leaveTs.low >>> 0, m.leaveTs.high >>> 0).toNumber(true) : m.leaveTs;
                 if (o.oneofs)
                     d._leaveTs = "leaveTs";
             }
@@ -82937,7 +83066,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fileLength === "number")
                     d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                 else
-                    d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                    d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                 if (o.oneofs)
                     d._fileLength = "fileLength";
             }
@@ -83158,7 +83287,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.mediaKeyTimestamp === "number")
                         d.mediaKeyTimestamp = o.longs === String ? String(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
                     else
-                        d.mediaKeyTimestamp = o.longs === String ? longToString(m.mediaKeyTimestamp) : o.longs === Number ? longToNumber(m.mediaKeyTimestamp) : m.mediaKeyTimestamp;
+                        d.mediaKeyTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.mediaKeyTimestamp) : o.longs === Number ? new $util.LongBits(m.mediaKeyTimestamp.low >>> 0, m.mediaKeyTimestamp.high >>> 0).toNumber() : m.mediaKeyTimestamp;
                     if (o.oneofs)
                         d._mediaKeyTimestamp = "mediaKeyTimestamp";
                 }
@@ -83705,7 +83834,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.amount1000 === "number")
                     d.amount1000 = o.longs === String ? String(m.amount1000) : m.amount1000;
                 else
-                    d.amount1000 = o.longs === String ? longToString(m.amount1000, true) : o.longs === Number ? longToNumber(m.amount1000, true) : m.amount1000;
+                    d.amount1000 = o.longs === String ? $util.Long.prototype.toString.call(m.amount1000) : o.longs === Number ? new $util.LongBits(m.amount1000.low >>> 0, m.amount1000.high >>> 0).toNumber(true) : m.amount1000;
                 if (o.oneofs)
                     d._amount1000 = "amount1000";
             }
@@ -83723,7 +83852,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.transactionTimestamp === "number")
                     d.transactionTimestamp = o.longs === String ? String(m.transactionTimestamp) : m.transactionTimestamp;
                 else
-                    d.transactionTimestamp = o.longs === String ? longToString(m.transactionTimestamp, true) : o.longs === Number ? longToNumber(m.transactionTimestamp, true) : m.transactionTimestamp;
+                    d.transactionTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.transactionTimestamp) : o.longs === Number ? new $util.LongBits(m.transactionTimestamp.low >>> 0, m.transactionTimestamp.high >>> 0).toNumber(true) : m.transactionTimestamp;
                 if (o.oneofs)
                     d._transactionTimestamp = "transactionTimestamp";
             }
@@ -83736,7 +83865,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.expiryTimestamp === "number")
                     d.expiryTimestamp = o.longs === String ? String(m.expiryTimestamp) : m.expiryTimestamp;
                 else
-                    d.expiryTimestamp = o.longs === String ? longToString(m.expiryTimestamp, true) : o.longs === Number ? longToNumber(m.expiryTimestamp, true) : m.expiryTimestamp;
+                    d.expiryTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.expiryTimestamp) : o.longs === Number ? new $util.LongBits(m.expiryTimestamp.low >>> 0, m.expiryTimestamp.high >>> 0).toNumber(true) : m.expiryTimestamp;
                 if (o.oneofs)
                     d._expiryTimestamp = "expiryTimestamp";
             }
@@ -84296,7 +84425,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestampMs === "number")
                     d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                 else
-                    d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                    d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                 if (o.oneofs)
                     d._senderTimestampMs = "senderTimestampMs";
             }
@@ -84304,7 +84433,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.serverTimestampMs === "number")
                     d.serverTimestampMs = o.longs === String ? String(m.serverTimestampMs) : m.serverTimestampMs;
                 else
-                    d.serverTimestampMs = o.longs === String ? longToString(m.serverTimestampMs) : o.longs === Number ? longToNumber(m.serverTimestampMs) : m.serverTimestampMs;
+                    d.serverTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.serverTimestampMs) : o.longs === Number ? new $util.LongBits(m.serverTimestampMs.low >>> 0, m.serverTimestampMs.high >>> 0).toNumber() : m.serverTimestampMs;
                 if (o.oneofs)
                     d._serverTimestampMs = "serverTimestampMs";
             }
@@ -84886,7 +85015,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestampMs === "number")
                     d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                 else
-                    d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                    d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                 if (o.oneofs)
                     d._senderTimestampMs = "senderTimestampMs";
             }
@@ -84894,7 +85023,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.serverTimestampMs === "number")
                     d.serverTimestampMs = o.longs === String ? String(m.serverTimestampMs) : m.serverTimestampMs;
                 else
-                    d.serverTimestampMs = o.longs === String ? longToString(m.serverTimestampMs) : o.longs === Number ? longToNumber(m.serverTimestampMs) : m.serverTimestampMs;
+                    d.serverTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.serverTimestampMs) : o.longs === Number ? new $util.LongBits(m.serverTimestampMs.low >>> 0, m.serverTimestampMs.high >>> 0).toNumber() : m.serverTimestampMs;
                 if (o.oneofs)
                     d._serverTimestampMs = "serverTimestampMs";
             }
@@ -85749,7 +85878,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fileLength === "number")
                     d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                 else
-                    d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                    d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                 if (o.oneofs)
                     d._fileLength = "fileLength";
             }
@@ -86320,7 +86449,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.senderTimestampMs === "number")
                     d.senderTimestampMs = o.longs === String ? String(m.senderTimestampMs) : m.senderTimestampMs;
                 else
-                    d.senderTimestampMs = o.longs === String ? longToString(m.senderTimestampMs) : o.longs === Number ? longToNumber(m.senderTimestampMs) : m.senderTimestampMs;
+                    d.senderTimestampMs = o.longs === String ? $util.Long.prototype.toString.call(m.senderTimestampMs) : o.longs === Number ? new $util.LongBits(m.senderTimestampMs.low >>> 0, m.senderTimestampMs.high >>> 0).toNumber() : m.senderTimestampMs;
                 if (o.oneofs)
                     d._senderTimestampMs = "senderTimestampMs";
             }
@@ -86980,7 +87109,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.scheduledTime === "number")
                     d.scheduledTime = o.longs === String ? String(m.scheduledTime) : m.scheduledTime;
                 else
-                    d.scheduledTime = o.longs === String ? longToString(m.scheduledTime, true) : o.longs === Number ? longToNumber(m.scheduledTime, true) : m.scheduledTime;
+                    d.scheduledTime = o.longs === String ? $util.Long.prototype.toString.call(m.scheduledTime) : o.longs === Number ? new $util.LongBits(m.scheduledTime.low >>> 0, m.scheduledTime.high >>> 0).toNumber(true) : m.scheduledTime;
                 if (o.oneofs)
                     d._scheduledTime = "scheduledTime";
             }
@@ -89766,7 +89895,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -91374,13 +91503,13 @@ export const proto = $root.proto = (() => {
                 if (typeof m.campaignId === "number")
                     d.campaignId = o.longs === String ? String(m.campaignId) : m.campaignId;
                 else
-                    d.campaignId = o.longs === String ? longToString(m.campaignId, true) : o.longs === Number ? longToNumber(m.campaignId, true) : m.campaignId;
+                    d.campaignId = o.longs === String ? $util.Long.prototype.toString.call(m.campaignId) : o.longs === Number ? new $util.LongBits(m.campaignId.low >>> 0, m.campaignId.high >>> 0).toNumber(true) : m.campaignId;
             }
             if (m.campaignExpirationTimestamp != null && m.hasOwnProperty("campaignExpirationTimestamp")) {
                 if (typeof m.campaignExpirationTimestamp === "number")
                     d.campaignExpirationTimestamp = o.longs === String ? String(m.campaignExpirationTimestamp) : m.campaignExpirationTimestamp;
                 else
-                    d.campaignExpirationTimestamp = o.longs === String ? longToString(m.campaignExpirationTimestamp, true) : o.longs === Number ? longToNumber(m.campaignExpirationTimestamp, true) : m.campaignExpirationTimestamp;
+                    d.campaignExpirationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.campaignExpirationTimestamp) : o.longs === Number ? new $util.LongBits(m.campaignExpirationTimestamp.low >>> 0, m.campaignExpirationTimestamp.high >>> 0).toNumber(true) : m.campaignExpirationTimestamp;
                 if (o.oneofs)
                     d._campaignExpirationTimestamp = "campaignExpirationTimestamp";
             }
@@ -91750,7 +91879,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.fileLength === "number")
                     d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                 else
-                    d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                    d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                 if (o.oneofs)
                     d._fileLength = "fileLength";
             }
@@ -91763,7 +91892,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.lastStickerSentTs === "number")
                     d.lastStickerSentTs = o.longs === String ? String(m.lastStickerSentTs) : m.lastStickerSentTs;
                 else
-                    d.lastStickerSentTs = o.longs === String ? longToString(m.lastStickerSentTs) : o.longs === Number ? longToNumber(m.lastStickerSentTs) : m.lastStickerSentTs;
+                    d.lastStickerSentTs = o.longs === String ? $util.Long.prototype.toString.call(m.lastStickerSentTs) : o.longs === Number ? new $util.LongBits(m.lastStickerSentTs.low >>> 0, m.lastStickerSentTs.high >>> 0).toNumber() : m.lastStickerSentTs;
                 if (o.oneofs)
                     d._lastStickerSentTs = "lastStickerSentTs";
             }
@@ -93437,7 +93566,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
@@ -94695,7 +94824,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.version === "number")
                         d.version = o.longs === String ? String(m.version) : m.version;
                     else
-                        d.version = o.longs === String ? longToString(m.version) : o.longs === Number ? longToNumber(m.version) : m.version;
+                        d.version = o.longs === String ? $util.Long.prototype.toString.call(m.version) : o.longs === Number ? new $util.LongBits(m.version.low >>> 0, m.version.high >>> 0).toNumber() : m.version;
                     if (o.oneofs)
                         d._version = "version";
                 }
@@ -94703,7 +94832,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.updatedAtMs === "number")
                         d.updatedAtMs = o.longs === String ? String(m.updatedAtMs) : m.updatedAtMs;
                     else
-                        d.updatedAtMs = o.longs === String ? longToString(m.updatedAtMs) : o.longs === Number ? longToNumber(m.updatedAtMs) : m.updatedAtMs;
+                        d.updatedAtMs = o.longs === String ? $util.Long.prototype.toString.call(m.updatedAtMs) : o.longs === Number ? new $util.LongBits(m.updatedAtMs.low >>> 0, m.updatedAtMs.high >>> 0).toNumber() : m.updatedAtMs;
                     if (o.oneofs)
                         d._updatedAtMs = "updatedAtMs";
                 }
@@ -95314,7 +95443,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.scheduledTimestamp === "number")
                         d.scheduledTimestamp = o.longs === String ? String(m.scheduledTimestamp) : m.scheduledTimestamp;
                     else
-                        d.scheduledTimestamp = o.longs === String ? longToString(m.scheduledTimestamp) : o.longs === Number ? longToNumber(m.scheduledTimestamp) : m.scheduledTimestamp;
+                        d.scheduledTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.scheduledTimestamp) : o.longs === Number ? new $util.LongBits(m.scheduledTimestamp.low >>> 0, m.scheduledTimestamp.high >>> 0).toNumber() : m.scheduledTimestamp;
                     if (o.oneofs)
                         d._scheduledTimestamp = "scheduledTimestamp";
                 }
@@ -95322,7 +95451,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.createTimestamp === "number")
                         d.createTimestamp = o.longs === String ? String(m.createTimestamp) : m.createTimestamp;
                     else
-                        d.createTimestamp = o.longs === String ? longToString(m.createTimestamp) : o.longs === Number ? longToNumber(m.createTimestamp) : m.createTimestamp;
+                        d.createTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.createTimestamp) : o.longs === Number ? new $util.LongBits(m.createTimestamp.low >>> 0, m.createTimestamp.high >>> 0).toNumber() : m.createTimestamp;
                     if (o.oneofs)
                         d._createTimestamp = "createTimestamp";
                 }
@@ -97060,7 +97189,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.birthday === "number")
                         d.birthday = o.longs === String ? String(m.birthday) : m.birthday;
                     else
-                        d.birthday = o.longs === String ? longToString(m.birthday) : o.longs === Number ? longToNumber(m.birthday) : m.birthday;
+                        d.birthday = o.longs === String ? $util.Long.prototype.toString.call(m.birthday) : o.longs === Number ? new $util.LongBits(m.birthday.low >>> 0, m.birthday.high >>> 0).toNumber() : m.birthday;
                     if (o.oneofs)
                         d._birthday = "birthday";
                 }
@@ -97083,7 +97212,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.lastOrder === "number")
                         d.lastOrder = o.longs === String ? String(m.lastOrder) : m.lastOrder;
                     else
-                        d.lastOrder = o.longs === String ? longToString(m.lastOrder) : o.longs === Number ? longToNumber(m.lastOrder) : m.lastOrder;
+                        d.lastOrder = o.longs === String ? $util.Long.prototype.toString.call(m.lastOrder) : o.longs === Number ? new $util.LongBits(m.lastOrder.low >>> 0, m.lastOrder.high >>> 0).toNumber() : m.lastOrder;
                     if (o.oneofs)
                         d._lastOrder = "lastOrder";
                 }
@@ -97091,7 +97220,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.createdAt === "number")
                         d.createdAt = o.longs === String ? String(m.createdAt) : m.createdAt;
                     else
-                        d.createdAt = o.longs === String ? longToString(m.createdAt) : o.longs === Number ? longToNumber(m.createdAt) : m.createdAt;
+                        d.createdAt = o.longs === String ? $util.Long.prototype.toString.call(m.createdAt) : o.longs === Number ? new $util.LongBits(m.createdAt.low >>> 0, m.createdAt.high >>> 0).toNumber() : m.createdAt;
                     if (o.oneofs)
                         d._createdAt = "createdAt";
                 }
@@ -97099,7 +97228,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.modifiedAt === "number")
                         d.modifiedAt = o.longs === String ? String(m.modifiedAt) : m.modifiedAt;
                     else
-                        d.modifiedAt = o.longs === String ? longToString(m.modifiedAt) : o.longs === Number ? longToNumber(m.modifiedAt) : m.modifiedAt;
+                        d.modifiedAt = o.longs === String ? $util.Long.prototype.toString.call(m.modifiedAt) : o.longs === Number ? new $util.LongBits(m.modifiedAt.low >>> 0, m.modifiedAt.high >>> 0).toNumber() : m.modifiedAt;
                     if (o.oneofs)
                         d._modifiedAt = "modifiedAt";
                 }
@@ -97441,7 +97570,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.messageTimestamp === "number")
                         d.messageTimestamp = o.longs === String ? String(m.messageTimestamp) : m.messageTimestamp;
                     else
-                        d.messageTimestamp = o.longs === String ? longToString(m.messageTimestamp) : o.longs === Number ? longToNumber(m.messageTimestamp) : m.messageTimestamp;
+                        d.messageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.messageTimestamp) : o.longs === Number ? new $util.LongBits(m.messageTimestamp.low >>> 0, m.messageTimestamp.high >>> 0).toNumber() : m.messageTimestamp;
                     if (o.oneofs)
                         d._messageTimestamp = "messageTimestamp";
                 }
@@ -98526,7 +98655,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.muteEndTimeMs === "number")
                         d.muteEndTimeMs = o.longs === String ? String(m.muteEndTimeMs) : m.muteEndTimeMs;
                     else
-                        d.muteEndTimeMs = o.longs === String ? longToString(m.muteEndTimeMs) : o.longs === Number ? longToNumber(m.muteEndTimeMs) : m.muteEndTimeMs;
+                        d.muteEndTimeMs = o.longs === String ? $util.Long.prototype.toString.call(m.muteEndTimeMs) : o.longs === Number ? new $util.LongBits(m.muteEndTimeMs.low >>> 0, m.muteEndTimeMs.high >>> 0).toNumber() : m.muteEndTimeMs;
                     if (o.oneofs)
                         d._muteEndTimeMs = "muteEndTimeMs";
                 }
@@ -99459,7 +99588,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.createdAt === "number")
                         d.createdAt = o.longs === String ? String(m.createdAt) : m.createdAt;
                     else
-                        d.createdAt = o.longs === String ? longToString(m.createdAt) : o.longs === Number ? longToNumber(m.createdAt) : m.createdAt;
+                        d.createdAt = o.longs === String ? $util.Long.prototype.toString.call(m.createdAt) : o.longs === Number ? new $util.LongBits(m.createdAt.low >>> 0, m.createdAt.high >>> 0).toNumber() : m.createdAt;
                     if (o.oneofs)
                         d._createdAt = "createdAt";
                 }
@@ -99467,7 +99596,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.lastSentAt === "number")
                         d.lastSentAt = o.longs === String ? String(m.lastSentAt) : m.lastSentAt;
                     else
-                        d.lastSentAt = o.longs === String ? longToString(m.lastSentAt) : o.longs === Number ? longToNumber(m.lastSentAt) : m.lastSentAt;
+                        d.lastSentAt = o.longs === String ? $util.Long.prototype.toString.call(m.lastSentAt) : o.longs === Number ? new $util.LongBits(m.lastSentAt.low >>> 0, m.lastSentAt.high >>> 0).toNumber() : m.lastSentAt;
                     if (o.oneofs)
                         d._lastSentAt = "lastSentAt";
                 }
@@ -100200,7 +100329,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.muteEndTimestamp === "number")
                         d.muteEndTimestamp = o.longs === String ? String(m.muteEndTimestamp) : m.muteEndTimestamp;
                     else
-                        d.muteEndTimestamp = o.longs === String ? longToString(m.muteEndTimestamp) : o.longs === Number ? longToNumber(m.muteEndTimestamp) : m.muteEndTimestamp;
+                        d.muteEndTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.muteEndTimestamp) : o.longs === Number ? new $util.LongBits(m.muteEndTimestamp.low >>> 0, m.muteEndTimestamp.high >>> 0).toNumber() : m.muteEndTimestamp;
                     if (o.oneofs)
                         d._muteEndTimestamp = "muteEndTimestamp";
                 }
@@ -100213,7 +100342,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.muteEveryoneMentionEndTimestamp === "number")
                         d.muteEveryoneMentionEndTimestamp = o.longs === String ? String(m.muteEveryoneMentionEndTimestamp) : m.muteEveryoneMentionEndTimestamp;
                     else
-                        d.muteEveryoneMentionEndTimestamp = o.longs === String ? longToString(m.muteEveryoneMentionEndTimestamp) : o.longs === Number ? longToNumber(m.muteEveryoneMentionEndTimestamp) : m.muteEveryoneMentionEndTimestamp;
+                        d.muteEveryoneMentionEndTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.muteEveryoneMentionEndTimestamp) : o.longs === Number ? new $util.LongBits(m.muteEveryoneMentionEndTimestamp.low >>> 0, m.muteEveryoneMentionEndTimestamp.high >>> 0).toNumber() : m.muteEveryoneMentionEndTimestamp;
                     if (o.oneofs)
                         d._muteEveryoneMentionEndTimestamp = "muteEveryoneMentionEndTimestamp";
                 }
@@ -100601,7 +100730,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.createdAt === "number")
                         d.createdAt = o.longs === String ? String(m.createdAt) : m.createdAt;
                     else
-                        d.createdAt = o.longs === String ? longToString(m.createdAt) : o.longs === Number ? longToNumber(m.createdAt) : m.createdAt;
+                        d.createdAt = o.longs === String ? $util.Long.prototype.toString.call(m.createdAt) : o.longs === Number ? new $util.LongBits(m.createdAt.low >>> 0, m.createdAt.high >>> 0).toNumber() : m.createdAt;
                     if (o.oneofs)
                         d._createdAt = "createdAt";
                 }
@@ -102491,7 +102620,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.lastStickerSentTs === "number")
                         d.lastStickerSentTs = o.longs === String ? String(m.lastStickerSentTs) : m.lastStickerSentTs;
                     else
-                        d.lastStickerSentTs = o.longs === String ? longToString(m.lastStickerSentTs) : o.longs === Number ? longToNumber(m.lastStickerSentTs) : m.lastStickerSentTs;
+                        d.lastStickerSentTs = o.longs === String ? $util.Long.prototype.toString.call(m.lastStickerSentTs) : o.longs === Number ? new $util.LongBits(m.lastStickerSentTs.low >>> 0, m.lastStickerSentTs.high >>> 0).toNumber() : m.lastStickerSentTs;
                     if (o.oneofs)
                         d._lastStickerSentTs = "lastStickerSentTs";
                 }
@@ -104394,7 +104523,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.fileLength === "number")
                         d.fileLength = o.longs === String ? String(m.fileLength) : m.fileLength;
                     else
-                        d.fileLength = o.longs === String ? longToString(m.fileLength, true) : o.longs === Number ? longToNumber(m.fileLength, true) : m.fileLength;
+                        d.fileLength = o.longs === String ? $util.Long.prototype.toString.call(m.fileLength) : o.longs === Number ? new $util.LongBits(m.fileLength.low >>> 0, m.fileLength.high >>> 0).toNumber(true) : m.fileLength;
                     if (o.oneofs)
                         d._fileLength = "fileLength";
                 }
@@ -104567,7 +104696,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.expirationDate === "number")
                         d.expirationDate = o.longs === String ? String(m.expirationDate) : m.expirationDate;
                     else
-                        d.expirationDate = o.longs === String ? longToString(m.expirationDate) : o.longs === Number ? longToNumber(m.expirationDate) : m.expirationDate;
+                        d.expirationDate = o.longs === String ? $util.Long.prototype.toString.call(m.expirationDate) : o.longs === Number ? new $util.LongBits(m.expirationDate.low >>> 0, m.expirationDate.high >>> 0).toNumber() : m.expirationDate;
                     if (o.oneofs)
                         d._expirationDate = "expirationDate";
                 }
@@ -104866,7 +104995,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.expirationTime === "number")
                             d.expirationTime = o.longs === String ? String(m.expirationTime) : m.expirationTime;
                         else
-                            d.expirationTime = o.longs === String ? longToString(m.expirationTime) : o.longs === Number ? longToNumber(m.expirationTime) : m.expirationTime;
+                            d.expirationTime = o.longs === String ? $util.Long.prototype.toString.call(m.expirationTime) : o.longs === Number ? new $util.LongBits(m.expirationTime.low >>> 0, m.expirationTime.high >>> 0).toNumber() : m.expirationTime;
                         if (o.oneofs)
                             d._expirationTime = "expirationTime";
                     }
@@ -105113,7 +105242,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.startTime === "number")
                             d.startTime = o.longs === String ? String(m.startTime) : m.startTime;
                         else
-                            d.startTime = o.longs === String ? longToString(m.startTime) : o.longs === Number ? longToNumber(m.startTime) : m.startTime;
+                            d.startTime = o.longs === String ? $util.Long.prototype.toString.call(m.startTime) : o.longs === Number ? new $util.LongBits(m.startTime.low >>> 0, m.startTime.high >>> 0).toNumber() : m.startTime;
                         if (o.oneofs)
                             d._startTime = "startTime";
                     }
@@ -105121,7 +105250,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.endTime === "number")
                             d.endTime = o.longs === String ? String(m.endTime) : m.endTime;
                         else
-                            d.endTime = o.longs === String ? longToString(m.endTime) : o.longs === Number ? longToNumber(m.endTime) : m.endTime;
+                            d.endTime = o.longs === String ? $util.Long.prototype.toString.call(m.endTime) : o.longs === Number ? new $util.LongBits(m.endTime.low >>> 0, m.endTime.high >>> 0).toNumber() : m.endTime;
                         if (o.oneofs)
                             d._endTime = "endTime";
                     }
@@ -105139,7 +105268,7 @@ export const proto = $root.proto = (() => {
                         if (typeof m.creationTime === "number")
                             d.creationTime = o.longs === String ? String(m.creationTime) : m.creationTime;
                         else
-                            d.creationTime = o.longs === String ? longToString(m.creationTime) : o.longs === Number ? longToNumber(m.creationTime) : m.creationTime;
+                            d.creationTime = o.longs === String ? $util.Long.prototype.toString.call(m.creationTime) : o.longs === Number ? new $util.LongBits(m.creationTime.low >>> 0, m.creationTime.high >>> 0).toNumber() : m.creationTime;
                         if (o.oneofs)
                             d._creationTime = "creationTime";
                     }
@@ -105271,7 +105400,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.timestamp === "number")
                         d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                     else
-                        d.timestamp = o.longs === String ? longToString(m.timestamp) : o.longs === Number ? longToNumber(m.timestamp) : m.timestamp;
+                        d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber() : m.timestamp;
                     if (o.oneofs)
                         d._timestamp = "timestamp";
                 }
@@ -105425,7 +105554,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.lastMessageTimestamp === "number")
                         d.lastMessageTimestamp = o.longs === String ? String(m.lastMessageTimestamp) : m.lastMessageTimestamp;
                     else
-                        d.lastMessageTimestamp = o.longs === String ? longToString(m.lastMessageTimestamp) : o.longs === Number ? longToNumber(m.lastMessageTimestamp) : m.lastMessageTimestamp;
+                        d.lastMessageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.lastMessageTimestamp) : o.longs === Number ? new $util.LongBits(m.lastMessageTimestamp.low >>> 0, m.lastMessageTimestamp.high >>> 0).toNumber() : m.lastMessageTimestamp;
                     if (o.oneofs)
                         d._lastMessageTimestamp = "lastMessageTimestamp";
                 }
@@ -105433,7 +105562,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.lastSystemMessageTimestamp === "number")
                         d.lastSystemMessageTimestamp = o.longs === String ? String(m.lastSystemMessageTimestamp) : m.lastSystemMessageTimestamp;
                     else
-                        d.lastSystemMessageTimestamp = o.longs === String ? longToString(m.lastSystemMessageTimestamp) : o.longs === Number ? longToNumber(m.lastSystemMessageTimestamp) : m.lastSystemMessageTimestamp;
+                        d.lastSystemMessageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.lastSystemMessageTimestamp) : o.longs === Number ? new $util.LongBits(m.lastSystemMessageTimestamp.low >>> 0, m.lastSystemMessageTimestamp.high >>> 0).toNumber() : m.lastSystemMessageTimestamp;
                     if (o.oneofs)
                         d._lastSystemMessageTimestamp = "lastSystemMessageTimestamp";
                 }
@@ -107416,7 +107545,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.version === "number")
                     d.version = o.longs === String ? String(m.version) : m.version;
                 else
-                    d.version = o.longs === String ? longToString(m.version, true) : o.longs === Number ? longToNumber(m.version, true) : m.version;
+                    d.version = o.longs === String ? $util.Long.prototype.toString.call(m.version) : o.longs === Number ? new $util.LongBits(m.version.low >>> 0, m.version.high >>> 0).toNumber(true) : m.version;
                 if (o.oneofs)
                     d._version = "version";
             }
@@ -109114,7 +109243,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.receiptTimestamp === "number")
                     d.receiptTimestamp = o.longs === String ? String(m.receiptTimestamp) : m.receiptTimestamp;
                 else
-                    d.receiptTimestamp = o.longs === String ? longToString(m.receiptTimestamp) : o.longs === Number ? longToNumber(m.receiptTimestamp) : m.receiptTimestamp;
+                    d.receiptTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.receiptTimestamp) : o.longs === Number ? new $util.LongBits(m.receiptTimestamp.low >>> 0, m.receiptTimestamp.high >>> 0).toNumber() : m.receiptTimestamp;
                 if (o.oneofs)
                     d._receiptTimestamp = "receiptTimestamp";
             }
@@ -109122,7 +109251,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.readTimestamp === "number")
                     d.readTimestamp = o.longs === String ? String(m.readTimestamp) : m.readTimestamp;
                 else
-                    d.readTimestamp = o.longs === String ? longToString(m.readTimestamp) : o.longs === Number ? longToNumber(m.readTimestamp) : m.readTimestamp;
+                    d.readTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.readTimestamp) : o.longs === Number ? new $util.LongBits(m.readTimestamp.low >>> 0, m.readTimestamp.high >>> 0).toNumber() : m.readTimestamp;
                 if (o.oneofs)
                     d._readTimestamp = "readTimestamp";
             }
@@ -109130,7 +109259,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.playedTimestamp === "number")
                     d.playedTimestamp = o.longs === String ? String(m.playedTimestamp) : m.playedTimestamp;
                 else
-                    d.playedTimestamp = o.longs === String ? longToString(m.playedTimestamp) : o.longs === Number ? longToNumber(m.playedTimestamp) : m.playedTimestamp;
+                    d.playedTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.playedTimestamp) : o.longs === Number ? new $util.LongBits(m.playedTimestamp.low >>> 0, m.playedTimestamp.high >>> 0).toNumber() : m.playedTimestamp;
                 if (o.oneofs)
                     d._playedTimestamp = "playedTimestamp";
             }
@@ -109472,7 +109601,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.serial === "number")
                         d.serial = o.longs === String ? String(m.serial) : m.serial;
                     else
-                        d.serial = o.longs === String ? longToString(m.serial, true) : o.longs === Number ? longToNumber(m.serial, true) : m.serial;
+                        d.serial = o.longs === String ? $util.Long.prototype.toString.call(m.serial) : o.longs === Number ? new $util.LongBits(m.serial.low >>> 0, m.serial.high >>> 0).toNumber(true) : m.serial;
                     if (o.oneofs)
                         d._serial = "serial";
                 }
@@ -109496,7 +109625,7 @@ export const proto = $root.proto = (() => {
                     if (typeof m.issueTime === "number")
                         d.issueTime = o.longs === String ? String(m.issueTime) : m.issueTime;
                     else
-                        d.issueTime = o.longs === String ? longToString(m.issueTime, true) : o.longs === Number ? longToNumber(m.issueTime, true) : m.issueTime;
+                        d.issueTime = o.longs === String ? $util.Long.prototype.toString.call(m.issueTime) : o.longs === Number ? new $util.LongBits(m.issueTime.low >>> 0, m.issueTime.high >>> 0).toNumber(true) : m.issueTime;
                     if (o.oneofs)
                         d._issueTime = "issueTime";
                 }
@@ -113983,7 +114112,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.messageTimestamp === "number")
                     d.messageTimestamp = o.longs === String ? String(m.messageTimestamp) : m.messageTimestamp;
                 else
-                    d.messageTimestamp = o.longs === String ? longToString(m.messageTimestamp, true) : o.longs === Number ? longToNumber(m.messageTimestamp, true) : m.messageTimestamp;
+                    d.messageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.messageTimestamp) : o.longs === Number ? new $util.LongBits(m.messageTimestamp.low >>> 0, m.messageTimestamp.high >>> 0).toNumber(true) : m.messageTimestamp;
                 if (o.oneofs)
                     d._messageTimestamp = "messageTimestamp";
             }
@@ -114001,7 +114130,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.messageC2STimestamp === "number")
                     d.messageC2STimestamp = o.longs === String ? String(m.messageC2STimestamp) : m.messageC2STimestamp;
                 else
-                    d.messageC2STimestamp = o.longs === String ? longToString(m.messageC2STimestamp, true) : o.longs === Number ? longToNumber(m.messageC2STimestamp, true) : m.messageC2STimestamp;
+                    d.messageC2STimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.messageC2STimestamp) : o.longs === Number ? new $util.LongBits(m.messageC2STimestamp.low >>> 0, m.messageC2STimestamp.high >>> 0).toNumber(true) : m.messageC2STimestamp;
                 if (o.oneofs)
                     d._messageC2STimestamp = "messageC2STimestamp";
             }
@@ -114091,7 +114220,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.ephemeralStartTimestamp === "number")
                     d.ephemeralStartTimestamp = o.longs === String ? String(m.ephemeralStartTimestamp) : m.ephemeralStartTimestamp;
                 else
-                    d.ephemeralStartTimestamp = o.longs === String ? longToString(m.ephemeralStartTimestamp, true) : o.longs === Number ? longToNumber(m.ephemeralStartTimestamp, true) : m.ephemeralStartTimestamp;
+                    d.ephemeralStartTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.ephemeralStartTimestamp) : o.longs === Number ? new $util.LongBits(m.ephemeralStartTimestamp.low >>> 0, m.ephemeralStartTimestamp.high >>> 0).toNumber(true) : m.ephemeralStartTimestamp;
                 if (o.oneofs)
                     d._ephemeralStartTimestamp = "ephemeralStartTimestamp";
             }
@@ -114197,7 +114326,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.revokeMessageTimestamp === "number")
                     d.revokeMessageTimestamp = o.longs === String ? String(m.revokeMessageTimestamp) : m.revokeMessageTimestamp;
                 else
-                    d.revokeMessageTimestamp = o.longs === String ? longToString(m.revokeMessageTimestamp, true) : o.longs === Number ? longToNumber(m.revokeMessageTimestamp, true) : m.revokeMessageTimestamp;
+                    d.revokeMessageTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.revokeMessageTimestamp) : o.longs === Number ? new $util.LongBits(m.revokeMessageTimestamp.low >>> 0, m.revokeMessageTimestamp.high >>> 0).toNumber(true) : m.revokeMessageTimestamp;
                 if (o.oneofs)
                     d._revokeMessageTimestamp = "revokeMessageTimestamp";
             }
@@ -114246,7 +114375,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.newsletterServerId === "number")
                     d.newsletterServerId = o.longs === String ? String(m.newsletterServerId) : m.newsletterServerId;
                 else
-                    d.newsletterServerId = o.longs === String ? longToString(m.newsletterServerId, true) : o.longs === Number ? longToNumber(m.newsletterServerId, true) : m.newsletterServerId;
+                    d.newsletterServerId = o.longs === String ? $util.Long.prototype.toString.call(m.newsletterServerId) : o.longs === Number ? new $util.LongBits(m.newsletterServerId.low >>> 0, m.newsletterServerId.high >>> 0).toNumber(true) : m.newsletterServerId;
                 if (o.oneofs)
                     d._newsletterServerId = "newsletterServerId";
             }
@@ -114338,7 +114467,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.ephemeralExpirationTimestamp === "number")
                     d.ephemeralExpirationTimestamp = o.longs === String ? String(m.ephemeralExpirationTimestamp) : m.ephemeralExpirationTimestamp;
                 else
-                    d.ephemeralExpirationTimestamp = o.longs === String ? longToString(m.ephemeralExpirationTimestamp, true) : o.longs === Number ? longToNumber(m.ephemeralExpirationTimestamp, true) : m.ephemeralExpirationTimestamp;
+                    d.ephemeralExpirationTimestamp = o.longs === String ? $util.Long.prototype.toString.call(m.ephemeralExpirationTimestamp) : o.longs === Number ? new $util.LongBits(m.ephemeralExpirationTimestamp.low >>> 0, m.ephemeralExpirationTimestamp.high >>> 0).toNumber(true) : m.ephemeralExpirationTimestamp;
                 if (o.oneofs)
                     d._ephemeralExpirationTimestamp = "ephemeralExpirationTimestamp";
             }
@@ -114768,7 +114897,7 @@ export const proto = $root.proto = (() => {
                 if (typeof m.timestamp === "number")
                     d.timestamp = o.longs === String ? String(m.timestamp) : m.timestamp;
                 else
-                    d.timestamp = o.longs === String ? longToString(m.timestamp, true) : o.longs === Number ? longToNumber(m.timestamp, true) : m.timestamp;
+                    d.timestamp = o.longs === String ? $util.Long.prototype.toString.call(m.timestamp) : o.longs === Number ? new $util.LongBits(m.timestamp.low >>> 0, m.timestamp.high >>> 0).toNumber(true) : m.timestamp;
                 if (o.oneofs)
                     d._timestamp = "timestamp";
             }
