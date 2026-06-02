@@ -10896,6 +10896,7 @@ export namespace proto {
         sharableEventInviteCaption?: (string|null);
         sharableEventInviteIsCanceled?: (boolean|null);
         sharableEventInviteJpegThumbnail?: (Uint8Array|null);
+        sharableEventInviteCallLink?: (string|null);
     }
 
     class MsgOpaqueData implements IMsgOpaqueData {
@@ -10954,6 +10955,7 @@ export namespace proto {
         public sharableEventInviteCaption?: (string|null);
         public sharableEventInviteIsCanceled?: (boolean|null);
         public sharableEventInviteJpegThumbnail?: (Uint8Array|null);
+        public sharableEventInviteCallLink?: (string|null);
         public static create(properties?: proto.IMsgOpaqueData): proto.MsgOpaqueData;
         public static encode(m: proto.IMsgOpaqueData, w?: $protobuf.Writer): $protobuf.Writer;
         public static decode(r: ($protobuf.Reader|Uint8Array), l?: number): proto.MsgOpaqueData;
