@@ -5,16 +5,7 @@ export function makeMessagesSocket(config: any): {
     };
     issuePrivacyTokens: (jids: any, timestamp: any) => Promise<any>;
     assertSessions: (jids: any, force: any) => Promise<boolean>;
-    relayMessage: (jid: any, message: any, { messageId: msgId, participant, additionalAttributes, additionalNodes, useUserDevicesCache, useCachedGroupMetadata, addBizAttributes, statusJidList }: {
-        messageId: any;
-        participant: any;
-        additionalAttributes: any;
-        additionalNodes: any;
-        useUserDevicesCache: any;
-        useCachedGroupMetadata: any;
-        addBizAttributes: any;
-        statusJidList: any;
-    }) => Promise<any>;
+    relayMessage: (jid: any, message: any, { messageId: msgId, participant, additionalAttributes, additionalNodes, useUserDevicesCache, useCachedGroupMetadata, addBizAttributes, statusJidList }?: {}) => Promise<any>;
     sendReceipt: (jid: any, participant: any, messageIds: any, type: any) => Promise<void>;
     sendReceipts: (keys: any, type: any) => Promise<void>;
     readMessages: (keys: any) => Promise<void>;
@@ -290,6 +281,7 @@ export function makeMessagesSocket(config: any): {
             set: (data: any) => Promise<void>;
             isInTransaction: () => boolean;
             transaction: (work: any, key: any) => Promise<any>;
+            disposeTransactionStorage: () => void;
         };
     };
     signalRepository: any;
@@ -327,4 +319,3 @@ export function makeMessagesSocket(config: any): {
 };
 import { MessageRetryManager } from '../Utils/index.js';
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=messages-send.d.ts.map

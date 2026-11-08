@@ -5,6 +5,8 @@ export const CALL_VIDEO_PREFIX: "https://call.whatsapp.com/video/";
 export const CALL_AUDIO_PREFIX: "https://call.whatsapp.com/voice/";
 export const DONATE_URL: "https://saweria.co/felice";
 export const LIBRARY_NAME: "olivea777/baileys";
+export const TEXT_ENCODER: TextEncoder;
+export const TEXT_DECODER: TextDecoder;
 export const DEF_CALLBACK_PREFIX: "CB:";
 export const DEF_TAG_PREFIX: "TAG:";
 export const PHONE_CONNECTION_CB: "CB:Pong";
@@ -42,7 +44,17 @@ export namespace DEFAULT_CONNECTION_CONFIG {
     export let waWebSocketUrl: string;
     export let connectTimeoutMs: number;
     export let keepAliveIntervalMs: number;
-    export let logger: any;
+    export let logger: Readonly<{
+        level: "silent";
+        debug: () => void;
+        info: () => void;
+        warn: () => void;
+        error: () => void;
+        fatal: () => void;
+        trace: () => void;
+        child: () => Readonly</*elided*/ any>;
+        isLevelEnabled: () => false;
+    }>;
     export let emitOwnEvents: boolean;
     export let defaultQueryTimeoutMs: number;
     export let customUploadHosts: never[];
@@ -78,40 +90,60 @@ export namespace DEFAULT_CONNECTION_CONFIG {
 export const MEDIA_PATH_MAP: {
     image: string;
     video: string;
-    document: string;
     audio: string;
+    document: string;
     sticker: string;
-    'sticker-pack': string;
-    'thumbnail-sticker-pack': string;
-    'thumbnail-link': string;
-    'thumbnail-image': string;
-    'thumbnail-video': string;
-    'thumbnail-document': string;
-    'product-catalog-image': string;
+    gif: string;
+    ptt: string;
+    ptv: string;
+    ppic: string;
+    'ads-image': string;
+    'ads-video': string;
+    'biz-cover-photo': string;
+    'group-history': string;
     'md-app-state': string;
     'md-msg-hist': string;
-    'biz-cover-photo': string;
+    'music-artwork': string;
+    'product-catalog-image': string;
+    'sticker-pack': string;
+    'thumbnail-document': string;
+    'thumbnail-image': string;
+    'thumbnail-link': string;
+    'thumbnail-sticker-pack': string;
+    'thumbnail-video': string;
+    'maiba-file': string;
 };
 export const NEWSLETTER_MEDIA_PATH_MAP: {
     image: string;
     video: string;
-    document: string;
     audio: string;
+    document: string;
     sticker: string;
+    gif: string;
+    ptt: string;
+    ptv: string;
+    'music-artwork': string;
+    'sticker-pack': string;
     'thumbnail-link': string;
+    'waffle-image': string;
+    'waffle-video': string;
 };
 export const MEDIA_HKDF_KEY_MAPPING: {
     audio: string;
     document: string;
     gif: string;
+    history: string;
     image: string;
-    ppic: string;
     product: string;
+    ppic: string;
     ptt: string;
-    'sticker-pack': string;
-    'thumbnail-sticker-pack': string;
     sticker: string;
     video: string;
+    'group-history': string;
+    'ads-image': string;
+    'ads-video': string;
+    'sticker-pack': string;
+    'thumbnail-sticker-pack': string;
     'thumbnail-document': string;
     'thumbnail-image': string;
     'thumbnail-video': string;
@@ -122,6 +154,8 @@ export const MEDIA_HKDF_KEY_MAPPING: {
     'payment-bg-image': string;
     ptv: string;
     'biz-cover-photo': string;
+    'music-artwork': string;
+    'maiba-file': string;
     location: string;
     contact: string;
     'voip-token': string;
@@ -138,8 +172,13 @@ export namespace TimeMs {
     let Day: number;
     let Week: number;
 }
+export namespace WEBSOCKET_STATES {
+    let CONNECTING: number;
+    let OPEN: number;
+    let CLOSING: number;
+    let CLOSED: number;
+}
 import { proto } from '../../WAProto/index.js';
 declare const version: number[];
 import { makeLibSignalRepository } from '../Signal/libsignal.js';
 export {};
-//# sourceMappingURL=index.d.ts.map

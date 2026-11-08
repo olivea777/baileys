@@ -4,11 +4,7 @@ export function getMediaKeys(buffer: any, mediaType: any): Promise<{
     cipherKey: any;
     macKey: any;
 }>;
-export function getAudioDuration(buffer: any): Promise<any>;
-/**
-  referenced from and modifying https://github.com/wppconnect-team/wa-js/blob/main/src/chat/functions/prepareAudioWaveform.ts
- */
-export function getAudioWaveform(buffer: any, logger: any): Promise<Uint8Array<ArrayBuffer> | undefined>;
+export function getAudioData(buffer: any, logger: any): Promise<any>;
 /** generates a thumbnail for a given media, if required */
 export function generateThumbnail(file: any, mediaType: any, options: any): Promise<{
     thumbnail: any;
@@ -45,7 +41,9 @@ export function getStream(item: any, opts: any): Promise<{
     type: string;
 }>;
 export function getHttpStream(url: any, options?: {}): Promise<any>;
-export function encryptedStream(media: any, mediaType: any, { logger, saveOriginalFileIfRequired, opts }?: {}): Promise<{
+export function encryptedStream(media: any, mediaType: any, { logger, saveOriginalFileIfRequired, mediaKey, opts }?: {
+    mediaKey?: any;
+}): Promise<{
     mediaKey: any;
     originalFilePath: any;
     encFilePath: any;
@@ -131,7 +129,6 @@ export function decodeMediaRetryNode(node: any): {
 export function decryptMediaRetryData({ ciphertext, iv }: {
     ciphertext: any;
     iv: any;
-}, mediaKey: any, msgId: any): proto.MediaRetryNotification;
+}, mediaKey: any, msgId: any): proto.MediaRetryNotification & proto.MediaRetryNotification.$Properties;
 export function getStatusCodeForMediaRetry(code: any): any;
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=messages-media.d.ts.map

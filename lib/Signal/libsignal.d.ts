@@ -38,7 +38,7 @@ export function makeLibSignalRepository(auth: any, logger: any, pnToLIDFunc: any
         jid: any;
         session: any;
     }): Promise<any>;
-    jidToSignalProtocolAddress(jid: any): any;
+    jidToSignalProtocolAddress(jid: any): string;
     lidMapping: LIDMappingStore;
     validateSession(jid: any): Promise<{
         exists: boolean;
@@ -52,4 +52,3 @@ export function makeLibSignalRepository(auth: any, logger: any, pnToLIDFunc: any
     migrateSession(fromJid: any, toJid: any): Promise<any>;
 };
 import { LIDMappingStore } from './lid-mapping.js';
-//# sourceMappingURL=libsignal.d.ts.map

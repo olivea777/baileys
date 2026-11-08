@@ -3,7 +3,7 @@
 [![Logo](https://files.catbox.moe/c5s9g0.jpg)](https://www.npmjs.com/package/@olivea777/baileys)
 
 <p align="center">
-   Enhanced Baileys v7 with fixes for newsletter media uploads, plus support for interactive messages, albums, and additional message types.
+   A lightweight, dependency-minimal Baileys v7 fork with newsletter media upload fixes, interactive messages, albums, and extended message type support.
    <br><br>
    <a href="https://www.npmjs.com/package/@olivea777/baileys">
       <img src="https://img.shields.io/npm/v/@olivea777/baileys?style=for-the-badge&logo=npm"/>
@@ -20,6 +20,9 @@
    <a href="https://nodejs.org">
       <img src="https://img.shields.io/badge/node-%3E%3D20-339933?logo=node.js&labelColor=green&logoColor=white&style=for-the-badge"/>
    </a>
+   <a href="https://bun.sh">
+      <img src="https://img.shields.io/badge/bun-%3E%3D1.2-fbf0df?logo=bun&labelColor=14151a&logoColor=white&style=for-the-badge"/>
+   </a>
    <a href="#">
       <img src="https://img.shields.io/badge/ESM-only?logo=javascript&labelColor=yellow&logoColor=black&style=for-the-badge"/>
    </a>
@@ -28,84 +31,83 @@
 ☕ For donation: [Saweria](https://saweria.co/felice)
 
 ### 📋 Table of Contents
-- [🌱 @olivea777/baileys](#-olivea777baileys)
-    - [📋 Table of Contents](#-table-of-contents)
-    - [✨ Highlights](#-highlights)
-    - [🛠️ Internal Adjustments](#️-internal-adjustments)
-    - [📨 Messages Handling \& Compatibility](#-messages-handling--compatibility)
-    - [🧩 Additional Message Options](#-additional-message-options)
-    - [📥 Installation](#-installation)
-      - [🧩 Import (ESM \& CJS)](#-import-esm--cjs)
-    - [🌐 Connect to WhatsApp (Quick Step)](#-connect-to-whatsapp-quick-step)
-      - [🔐 Auth State](#-auth-state)
-    - [🗄️ Implementing Data Store](#️-implementing-data-store)
-    - [🪪 WhatsApp IDs Explain](#-whatsapp-ids-explain)
-    - [✉️ Sending Messages](#️-sending-messages)
-      - [🔠 Text](#-text)
-      - [🔔 Mention](#-mention)
-      - [😁 Reaction](#-reaction)
-      - [📌 Pin Message](#-pin-message)
-      - [🔖 Keep Chat](#-keep-chat)
-      - [➡️ Forward Message](#️-forward-message)
-      - [👤 Contact](#-contact)
-      - [📍 Location](#-location)
-      - [🗓️ Event](#️-event)
-      - [👥 Group Invite](#-group-invite)
-      - [🛍️ Product](#️-product)
-      - [📊 Poll](#-poll)
-      - [💭 Button Response](#-button-response)
-      - [✨ Rich Response](#-rich-response)
-      - [🧾 Message with Code Block](#-message-with-code-block)
-      - [🌏 Message with Inline Entities](#-message-with-inline-entities)
-      - [📋 Message with Table](#-message-with-table)
-      - [🎞️ Status Mention](#️-status-mention)
-    - [📁 Sending Media Messages](#-sending-media-messages)
-      - [🖼️ Image](#️-image)
-      - [🎥 Video](#-video)
-      - [📃 Sticker](#-sticker)
-      - [💽 Audio](#-audio)
-      - [🗂️ Document](#️-document)
-      - [🖼️ Album (Image \& Video)](#️-album-image--video)
-      - [📦 Sticker Pack](#-sticker-pack)
-    - [👉🏻 Sending Interactive Messages](#-sending-interactive-messages)
-      - [🔘 Buttons](#-buttons)
-      - [📋 List](#-list)
-      - [🗄️ Interactive](#️-interactive)
-      - [🫙 Hydrated Template](#-hydrated-template)
-    - [💳 Sending Payment Messages](#-sending-payment-messages)
-      - [➕ Invite Payment](#-invite-payment)
-      - [🧾 Invoice](#-invoice)
-      - [🛍️ Order](#️-order)
-      - [💳 Request Payment](#-request-payment)
-    - [👁️ Other Message Options](#️-other-message-options)
-      - [🤖 AI Icon](#-ai-icon)
-      - [🕒 Ephemeral](#-ephemeral)
-      - [📰 External Ad Reply](#-external-ad-reply)
-      - [🧑‍🧑‍🧒 Group Status](#-group-status)
-      - [🐱 Lottie Sticker](#-lottie-sticker)
-      - [🧩 Raw](#-raw)
-      - [🏷️ Secure Meta Service Label](#️-secure-meta-service-label)
-      - [📑 Spoiler](#-spoiler)
-      - [👁️ View Once](#️-view-once)
-      - [👁️ View Once V2](#️-view-once-v2)
-      - [👁️ View Once V2 Extension](#️-view-once-v2-extension)
-    - [♻️ Modify Messages](#️-modify-messages)
-      - [🗑️ Delete Messages](#️-delete-messages)
-      - [✏️ Edit Messages](#️-edit-messages)
-    - [🧰 Additional Contents](#-additional-contents)
-      - [🏷️ Find User ID (JID|PN/LID)](#️-find-user-id-jidpnlid)
-      - [🔑 Request Custom Pairing Code](#-request-custom-pairing-code)
-      - [🖼️ Image Processing](#️-image-processing)
-      - [📣 Newsletter Management](#-newsletter-management)
-      - [👥 Group Management](#-group-management)
-      - [👥 Community Management](#-community-management)
-      - [👤 Profile Management](#-profile-management)
-      - [🛒 Business Management](#-business-management)
-      - [🔐 Privacy Management](#-privacy-management)
-      - [📡 Events](#-events)
-    - [🚀 Try the Bot](#-try-the-bot)
-    - [📦 Fork Base](#-fork-base)
-    - [📣 Credits](#-credits)
+- [📋 Table of Contents](#-table-of-contents)
+- [✨ Highlights](#-highlights)
+- [🛠️ Internal Adjustments](#%EF%B8%8F-internal-adjustments)
+- [📨 Messages Handling & Compatibility](#-highlights)
+- [🧩 Additional Message Options](#-additional-message-options)
+- [📥 Installation](#-installation)
+   - [🧩 Import (ESM & CJS)](#-import-esm--cjs)
+- [🌐 Connect to WhatsApp (Quick Step)](#-connect-to-whatsapp-quick-step)
+   - [🔐 Auth State](#-auth-state)
+- [🗄️ Implementing Data Store](#%EF%B8%8F-implementing-data-store)
+- [🪪 WhatsApp IDs Explain](#-whatsapp-ids-explain)
+- [✉️ Sending Messages](#%EF%B8%8F-sending-messages)
+   - [🔠 Text](#-text)
+   - [🔔 Mention](#-mention)
+   - [😁 Reaction](#-reaction)
+   - [📌 Pin Message](#-pin-message)
+   - [🔖 Keep Chat](#-keep-chat)
+   - [➡️ Forward Message](#%EF%B8%8F-forward-message)
+   - [👤 Contact](#-contact)
+   - [📍 Location](#-location)
+   - [🗓️ Event](#%EF%B8%8F-event)
+   - [👥 Group Invite](#-group-invite)
+   - [🛍️ Product](#%EF%B8%8F-product)
+   - [📊 Poll](#-poll)
+   - [💭 Button Response](#-button-response)
+   - [✨ Rich Response](#-rich-response)
+   - [🧾 Message with Code Block](#-message-with-code-block)
+   - [🌏 Message with Inline Entities](#-message-with-inline-entities)
+   - [📋 Message with Table](#-message-with-table)
+   - [🎞️ Status Mention](#%EF%B8%8F-status-mention)
+- [📁 Sending Media Messages](#-sending-media-messages)
+   - [🖼️ Image](#%EF%B8%8F-image)
+   - [🎥 Video](#-video)
+   - [📃 Sticker](#-sticker)
+   - [💽 Audio](#-audio)
+   - [🗂️ Document](#%EF%B8%8F-document)
+   - [🖼️ Album (Image & Video)](#%EF%B8%8F-album-image--video)
+   - [📦 Sticker Pack](#-sticker-pack)
+- [👉🏻 Sending Interactive Messages](#-sending-interactive-messages)
+   - [🔘 Buttons](#-buttons)
+   - [📋 List](#-list)
+   - [🗄️ Interactive](#%EF%B8%8F-interactive)
+   - [🫙 Hydrated Template](#-hydrated-template)
+- [💳 Sending Payment Messages](#-sending-payment-messages)
+   - [➕ Invite Payment](#-invite-payment)
+   - [🧾 Invoice](#-invoice)
+   - [🛍️ Order](#%EF%B8%8F-order)
+   - [💳 Request Payment](#-request-payment)
+- [👁️ Other Message Options](#%EF%B8%8F-other-message-options)
+   - [🤖 AI Icon](#-ai-icon)
+   - [🕒 Ephemeral](#-ephemeral)
+   - [📰 External Ad Reply](#-external-ad-reply)
+   - [🧑‍🧑‍🧒 Group Status](#%E2%80%8D%E2%80%8D-group-status)
+   - [🐱 Lottie Sticker](#-lottie-sticker)
+   - [🧩 Raw](#-raw)
+   - [🏷️ Secure Meta Service Label](#%EF%B8%8F-secure-meta-service-label)
+   - [📑 Spoiler](#-spoiler)
+   - [👁️ View Once](#%EF%B8%8F-view-once)
+   - [👁️ View Once V2](#%EF%B8%8F-view-once-v2)
+   - [👁️ View Once V2 Extension](#%EF%B8%8F-view-once-v2-extension)
+- [♻️ Modify Messages](#%EF%B8%8F-modify-messages)
+   - [🗑️ Delete Messages](#%EF%B8%8F-delete-messages)
+   - [✏️ Edit Messages](#%EF%B8%8F-edit-messages)
+- [🧰 Additional Contents](#-additional-contents)
+   - [🏷️ Find User ID (JID|PN/LID)](#%EF%B8%8F-find-user-id-jidpnlid)
+   - [🔑 Request Custom Pairing Code](#-request-custom-pairing-code)
+   - [🖼️ Image Processing](#%EF%B8%8F-image-processing)
+   - [📣 Newsletter Management](#-newsletter-management)
+   - [👥 Group Management](#-group-management)
+   - [👥 Community Management](#-community-management)
+   - [👤 Profile Management](#-profile-management)
+   - [🛒 Business Management](#-business-management)
+   - [🔐 Privacy Management](#-privacy-management)
+   - [📡 Events](#-events)
+- [🚀 Try the Bot](#-try-the-bot)
+- [📦 Fork Base](#-fork-base)
+- [📣 Credits](#-credits)
 
 ### ✨ Highlights
 
@@ -115,38 +117,11 @@ This fork designed for production use with a focus on clarity and safety:
 - 🚫 No auto-follow channel (newsletter) behavior.
 
 > [!IMPORTANT]
-> Hi everyone,
->
-> I want to clarify two separate attribution issues regarding packages derived from this fork.
->
-> 1. Direct redistribution of my modifications without attribution
->
-> The following packages are operated by the same individual under multiple npm accounts:
->
-> - [@nuisockets](https://www.npmjs.com/package/@nuisockets/baileys)
-> - [@nuiisatoru](https://www.npmjs.com/package/@nuiisatoru/baileys)
-> - [@nuiisweetberry](https://www.npmjs.com/package/@nuiisweetberry/baileys)
-> - [@nuiisweety](https://www.npmjs.com/package/@nuiisweety/baileys)
->
-> These packages redistribute files and modifications originating from this fork while removing contributor credits and modification notes.
->
-> 2. Rebranded republishes of this fork
->
-> - [@lumina-md](https://www.npmjs.com/package/@lumina-md/baileys)
-> - [@sairidev](https://www.npmjs.com/package/@sairidev/baileys-new)
-> - [nexora-baileys](https://www.npmjs.com/package/nexora-baileys)
-> - [baileys-yorkv2](https://www.npmjs.com/package/baileys-yorkv2)
-> - [aetherzxyz](https://www.npmjs.com/package/aetherzxyz)
->
-> These packages primarily repackage or republish this fork under different names while failing to preserve proper attribution, credits, or modification notes.
-> 
 > To be clear, I am **NOT** the original maintainer of Baileys. Full credit and respect belong to:
 >
 > https://github.com/WhiskeySockets/Baileys
 >
 > **Forking is completely acceptable. Removing attribution, contributor credits, or modification history is not.**
->
-> Please report if necessary.
 >
 > Thank you. 🤍
 
@@ -160,6 +135,9 @@ This fork designed for production use with a focus on clarity and safety:
 - 📁 Reintroduced [`makeInMemoryStore`](#%EF%B8%8F-implementing-data-store) with a minimal ESM adaptation and small adjustments for Baileys v7.
 - 📦 Switched FFmpeg execution from `exec` to `spawn` for safer process handling.
 - 🗃️ Added [`@napi-rs/image`](https://www.npmjs.com/package/@napi-rs/image) as a supported image processing backend in [`getImageProcessingLibrary()`](#%EF%B8%8F-image-processing), offering a balance between performance and compatibility.
+- ◻️ Reintroduced `printQRInTerminal` in `makeWASocket()`.
+- 📡 Migrated signal transport to a Rust-based WASM.
+- 🌱 Reduced transitive dependencies from 13 to just 2 with optional peer integrations.
 
 ### 📨 Messages Handling & Compatibility
 - 📩 Expanded messages support for:
@@ -168,24 +146,26 @@ This fork designed for production use with a focus on clarity and safety:
    - 👉🏻 [Interactive Message](#-sending-interactive-messages) (buttons, lists, native flows, templates, carousels).
    - 🎞️ [Status Mention Message](#%EF%B8%8F-status-mention)
    - 📦 [Sticker Pack Message](#-sticker-pack)
-   - ✨ [Rich Response Message](#-rich-response) **[NEW]**
-   - 🧾 [Message with Code Blocks](#-message-with-code-block) **[NEW]**
-   - [🌏 Message with Inline Entities](#-message-with-inline-entities) **[NEW]**
-   - 📋 [Message with Table](#-message-with-table) **[NEW]**
+   - ✨ [Rich Response Message](#-rich-response)
+   - 🧾 [Message with Code Blocks](#-message-with-code-block)
+   - [🌏 Message with Inline Entities](#-message-with-inline-entities)
+   - 📋 [Message with Table](#-message-with-table)
    - 💳 [Payment-related Message](#-sending-payment-messages) (payment requests, invites, orders, invoices).
 - 📰 Simplified sending messages with ad thumbnail using [`externalAdReply`](#-external-ad-reply), without requiring manual `contextInfo`.
-- 💭 Added support for quoting messages inside channel (newsletter). **[NEW]**
-- 🎀 Added support for [custom button icon](#%EF%B8%8F-interactive). **[NEW]**
+- 💭 Added support for quoting messages inside channel (newsletter).
+- 🎀 Added support for [custom button icon](#%EF%B8%8F-interactive).
 
 ### 🧩 Additional Message Options
 - 👁️ Added optional boolean flags for message handling:  
    - 🤖 [`ai`](#-ai-icon) - AI icon on message
-   - 📣 [`mentionAll`](#-mention) - Mention all group participants without requiring their JIDs in `mentions` or `mentionedJid` **[NEW]**
+   - 📣 [`mentionAll`](#-mention) - Mention all group participants without requiring their JIDs in `mentions` or `mentionedJid`
    - 🔧 [`ephemeral`](#-ephemeral), [`groupStatus`](#%E2%80%8D%E2%80%8D-group-status), [`isLottie`](#-lottie-sticker), [`spoiler`](#-spoiler), [`viewOnce`](#%EF%B8%8F-view-once), [`viewOnceV2`](#%EF%B8%8F-view-once-v2), [`viewOnceV2Extension`](#%EF%B8%8F-view-once-v2-extension), [`interactiveAsTemplate`](#%EF%B8%8F-interactive) - Message wrappers
-   - 🔒 [`secureMetaServiceLabel`](#%EF%B8%8F-secure-meta-service-label) - Secure meta service label on message **[NEW]**
+   - 🔒 [`secureMetaServiceLabel`](#%EF%B8%8F-secure-meta-service-label) - Secure meta service label on message
    - 📄 [`raw`](#-raw) - Build your message manually **(DO NOT USE FOR EXPLOITATION)**
 
 ### 📥 Installation
+
+Choose one of the following methods to install `@olivea777/baileys`.
 
 - 📄 Via `package.json`
 
@@ -211,6 +191,16 @@ npm i @olivea777/baileys@latest
 npm i github:olivea777/baileys
 ```
 
+- 🔗 Peer Dependencies
+  - One of `@napi-rs/image@^1.12.0`, `jimp@^1.6.0`, or `sharp@>=0.33.0` is required for thumbnail generation and other image processing operations.
+  - `better-sqlite3@>=11.0.0` is required for `useSqliteAuthState` when using Node.js versions below `22.13`.
+  - `qr@>=0.5.0` is required for `printQRInTerminal`.
+  - `ws@^8.13.0` is required when using Node.js versions below `22.0`.
+
+- ⚙️ System Dependencies
+  - `ffmpeg` is required for video thumbnail extraction, audio waveform generation, and other media processing operations.
+  - `ffprobe` is required for media metadata inspection (MediaInfo).
+
 #### 🧩 Import (ESM & CJS)
 
 ```javascript
@@ -225,33 +215,31 @@ const { makeWASocket } = require('@olivea777/baileys')
 
 ```javascript
 import { makeWASocket, delay, DisconnectReason, useMultiFileAuthState } from '@olivea777/baileys'
-import { Boom } from '@hapi/boom'
-import pino from 'pino'
 
 // --- Connect with pairing code
 const myPhoneNumber = '6288888888888'
-
-const logger = pino({ level: 'silent' })
 
 const connectToWhatsApp = async () => {
    const { state, saveCreds } = await useMultiFileAuthState('session')
     
    const sock = makeWASocket({
-      logger,
+      // Optional, "qr" must be installed
+      printQRInTerminal: true,
+
       auth: state
    })
 
    sock.ev.on('creds.update', saveCreds)
 
    sock.ev.on('connection.update', (update) => {
-      const { connection, lastDisconnect } = update
-      if (connection === 'connecting' && !sock.authState.creds.registered) {
+      const { connection, lastDisconnect, qr } = update
+      if (qr && !sock.authState.creds.registered) {
          await delay(1500)
          const code = await sock.requestPairingCode(myPhoneNumber)
          console.log('🔗 Pairing code', ':', code)
       }
       else if (connection === 'close') {
-         const shouldReconnect = new Boom(connection?.lastDisconnect?.error)?.output?.statusCode !== DisconnectReason.loggedOut
+         const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
          console.log('⚠️ Connection closed because', lastDisconnect.error, ', reconnecting ', shouldReconnect)
          if (shouldReconnect) {
             connectToWhatsApp()
@@ -279,8 +267,22 @@ connectToWhatsApp()
 
 #### 🔐 Auth State
 
-> [!NOTE]
-> You can use the experimental `useSingleFileAuthState` and `useSqliteAuthState` as an alternative to `useMultiFileAuthState`. However, `useSingleFileAuthState` already includes an internal caching mechanism, so there is no need to wrap `state.keys` with `makeCacheableSignalKeyStore`.
+```javascript
+import {
+   useMultiFileAuthState,
+   useSingleFileAuthState,
+   useSqliteAuthState
+} from '@olivea777/baileys'
+```
+
+- 🗒️ `useMultiFileAuthState(folder?: string)`
+   Stores authentication credentials and keys in separate JSON files within a directory. Suitable for users who prefer the traditional multi-file storage approach.
+
+- 📄 `useSingleFileAuthState(fileName?: string)`
+   Stores all authentication credentials and keys in a single JSON file for simpler file management.
+
+- 🗄️ `useSqliteAuthState(dbPath?: string, ownedDatabase?: object)`
+   Stores authentication credentials and keys in an SQLite database. No external SQLite dependency is required when using Bun or Node.js `>=22.13`. For older Node.js versions, install `better-sqlite3`.
 
 ### 🗄️ Implementing Data Store
 
@@ -289,26 +291,20 @@ connectToWhatsApp()
 
 ```javascript
 import { makeWASocket, makeInMemoryStore, delay, DisconnectReason, useMultiFileAuthState } from '@olivea777/baileys'
-import { Boom } from '@hapi/boom'
-import pino from 'pino'
 
 const myPhoneNumber = '6288888888888'
 
 // --- Create your store path
 const storePath = './store.json'
 
-const logger = pino({ level: 'silent' })
-
 const connectToWhatsApp = async () => {
    const { state, saveCreds } = await useMultiFileAuthState('session')
     
    const sock = makeWASocket({
-      logger,
       auth: state
    })
 
    const store = makeInMemoryStore({
-      logger,
       socket: sock
    })
 
@@ -324,7 +320,7 @@ const connectToWhatsApp = async () => {
          console.log('🔗 Pairing code', ':', code)
       }
       else if (connection === 'close') {
-         const shouldReconnect = new Boom(connection?.lastDisconnect?.error)?.output?.statusCode !== DisconnectReason.loggedOut
+         const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut
          console.log('⚠️ Connection closed because', lastDisconnect.error, ', reconnecting ', shouldReconnect)
          if (shouldReconnect) {
             connectToWhatsApp()
@@ -1209,7 +1205,7 @@ sock.sendMessage(jid, {
    caption: '🫙 Template!',
    footer: '@olivea777/baileys',
    templateButtons: [{
-      text: '👉?? Tap Here',
+      text: '👉🏻 Tap Here',
       id: '#Order'
    }, {
       text: '🌐 Source',
@@ -2044,13 +2040,6 @@ sock.ev.on('newsletter-settings.update', (update) => {})
 sock.ev.on('settings.update', (update) => {})
 ```
 
-### 🚀 Try the Bot
-
-A fast, lightweight, and modular WhatsApp bot built with [@olivea777/baileys](https://www.npmjs.com/package/@olivea777/baileys).
-Perfect for managing groups, moderating chats, and adding fun with quiz games and handy tools.
-
-👉🏻 [@olivea777/starseed](https://github.com/olivea777/starseed#readme)
-
 ### 📦 Fork Base
 
 This fork is based on [Baileys (GitHub)](https://github.com/WhiskeySockets/Baileys)
@@ -2066,9 +2055,7 @@ Full credit is attributed to the original maintainers and contributors of Bailey
 
 <!-- Please do not replace my name with yours. It's disrespectful. -->
 
-This fork includes additional enhancements and modifications by [Lia Wynn](https://github.com/olivea777)
-
-Special thanks to [itsreimau](https://github.com/itsreimau) for the fix to the `updateBlockStatus` implementation.
+This fork includes additional enhancements and modifications by [Lia Wynn](https://github.com/itsliaaa)
 
 > [!CAUTION]
 > ⚠️ **Modification, removal, or misrepresentation of these credits is strictly prohibited. Any redistribution or fork must preserve this section in its original form without exception.**

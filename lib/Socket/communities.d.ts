@@ -212,22 +212,14 @@ export function makeCommunitiesSocket(config: any): {
     fetchMessageHistory: (count: any, oldestMsgKey: any, oldestMsgTimestamp: any) => Promise<any>;
     requestPlaceholderResend: (messageKey: any, msgData: any) => Promise<any>;
     messageRetryManager: import("../Utils/message-retry-manager.js").MessageRetryManager | null;
+    getCachedMessage: (key: any) => Promise<any>;
     userDevicesCache: any;
     devicesMutex: {
         mutex(code: any): any;
     };
     issuePrivacyTokens: (jids: any, timestamp: any) => Promise<any>;
     assertSessions: (jids: any, force: any) => Promise<boolean>;
-    relayMessage: (jid: any, message: any, { messageId: msgId, participant, additionalAttributes, additionalNodes, useUserDevicesCache, useCachedGroupMetadata, addBizAttributes, statusJidList }: {
-        messageId: any;
-        participant: any;
-        additionalAttributes: any;
-        additionalNodes: any;
-        useUserDevicesCache: any;
-        useCachedGroupMetadata: any;
-        addBizAttributes: any;
-        statusJidList: any;
-    }) => Promise<any>;
+    relayMessage: (jid: any, message: any, { messageId: msgId, participant, additionalAttributes, additionalNodes, useUserDevicesCache, useCachedGroupMetadata, addBizAttributes, statusJidList }?: {}) => Promise<any>;
     sendReceipt: (jid: any, participant: any, messageIds: any, type: any) => Promise<void>;
     sendReceipts: (keys: any, type: any) => Promise<void>;
     readMessages: (keys: any) => Promise<void>;
@@ -502,6 +494,7 @@ export function makeCommunitiesSocket(config: any): {
             set: (data: any) => Promise<void>;
             isInTransaction: () => boolean;
             transaction: (work: any, key: any) => Promise<any>;
+            disposeTransactionStorage: () => void;
         };
     };
     signalRepository: any;
@@ -559,4 +552,3 @@ export function extractCommunityMetadata(result: any): {
     addressingMode: any;
 };
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=communities.d.ts.map

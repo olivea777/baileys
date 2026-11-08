@@ -10,7 +10,7 @@ export function configureSuccessfulPairing(stanza: any, { advSecretKey, signedId
     signalIdentities: any;
 }): {
     creds: {
-        account: proto.ADVSignedDeviceIdentity;
+        account: proto.ADVSignedDeviceIdentity & proto.ADVSignedDeviceIdentity.$Properties;
         me: {
             id: any;
             name: any;
@@ -18,6 +18,7 @@ export function configureSuccessfulPairing(stanza: any, { advSecretKey, signedId
         };
         signalIdentities: any[];
         platform: any;
+        registered: boolean;
     };
     reply: {
         tag: string;
@@ -34,11 +35,10 @@ export function configureSuccessfulPairing(stanza: any, { advSecretKey, signedId
                 attrs: {
                     'key-index': string;
                 };
-                content: any;
+                content: Uint8Array<ArrayBufferLike>;
             }[];
         }[];
     };
 };
-export function encodeSignedDeviceIdentity(account: any, includeSignatureKey: any): any;
+export function encodeSignedDeviceIdentity(account: any, includeSignatureKey: any): Uint8Array<ArrayBufferLike>;
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=validate-connection.d.ts.map

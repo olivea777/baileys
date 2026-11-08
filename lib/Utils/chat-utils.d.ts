@@ -61,7 +61,7 @@ export function decodeSyncdPatch(msg: any, name: any, initialState: any, getAppS
 }>;
 export function extractSyncdPatches(result: any, options: any): Promise<{}>;
 export function downloadExternalBlob(blob: any, options: any): Promise<any>;
-export function downloadExternalPatch(blob: any, options: any): Promise<proto.SyncdMutations>;
+export function downloadExternalPatch(blob: any, options: any): Promise<proto.SyncdMutations & proto.SyncdMutations.$Properties>;
 export function decodeSyncdSnapshot(name: any, snapshot: any, getAppStateSyncKey: any, minimumVersionNumber: any, validateMacs: boolean | undefined, logger: any): Promise<{
     state: {
         version: number;
@@ -406,4 +406,3 @@ export function chatModificationToAppPatch(mod: any, jid: any): {
 };
 export function processSyncAction(syncAction: any, ev: any, me: any, initialSyncOpts: any, logger: any): void;
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=chat-utils.d.ts.map

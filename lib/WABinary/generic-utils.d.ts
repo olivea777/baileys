@@ -42,6 +42,9 @@ export function getBizBinaryNode(message: any): {
         content: {
             tag: string;
             attrs: {
+                name: any;
+                v?: undefined;
+            } | {
                 v: string;
                 name: any;
             };
@@ -74,4 +77,3 @@ export function getBizBinaryNode(message: any): {
         };
     })[];
 };
-//# sourceMappingURL=generic-utils.d.ts.map

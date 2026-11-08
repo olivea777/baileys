@@ -1,4 +1,4 @@
-export function downloadHistory(msg: any, options: any): Promise<proto.HistorySync>;
+export function downloadHistory(msg: any, options: any): Promise<proto.HistorySync & proto.HistorySync.$Shape>;
 export function processHistoryMessage(item: any, logger: any): {
     chats: any[];
     contacts: ({
@@ -73,4 +73,3 @@ export function downloadAndProcessHistorySyncNotification(msg: any, options: any
 }>;
 export function getHistoryMsg(message: any): any;
 import { proto } from '../../WAProto/index.js';
-//# sourceMappingURL=history.d.ts.map
